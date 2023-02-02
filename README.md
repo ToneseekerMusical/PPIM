@@ -9,3 +9,5 @@ At this point in time, the GUI is under construction. Once the GUI scaffolding h
 On starting up the program you will be met with the add project screen where you can designate various project information, your github repository for the project, database information, select plugins to install with the new project, and a command line interface that displays a readout of what is currently being executed on your computer.
 
 The sidebar contains database controls to start and stop the MongoDB database, and display its current state, buttons to update the node and MongoDB versions installed with the program, as well as a settings tab to modify various settings such as default user name and password, your github credentials, MongoDB connection details etc
+
+PPIM is built using customtkinter and tkinter at this moment, these dependencies are guaranteed to change without notice, so please, be sure to ensure you have the required packages in the requirements.txt installed.
