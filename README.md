@@ -1,7 +1,7 @@
 # PPIM
 Python Payload Instance Manager
 
-Python Payload Instance Manager aims to reduce the complexity of setting up a local PayloadCMS instance for development and making the CMS more accessible to those who have little to no experience coding. The project is currently in its infancy and isn't even fully functional at the moment, but I'd like to put this out for the community to leave feedback as the project develops, improve my coding knowledge, and contribute to the PayloadCMS project by lowering the learning curve for Wordpress users.
+Python Payload Instance Manager is a tool built for windows that aims to reduce the complexity of setting up a local PayloadCMS instance for development and making the CMS more accessible to those who have little to no experience coding. The project is currently in its infancy and isn't even fully functional at the moment, but I'd like to put this out for the community to leave feedback as the project develops, improve my coding knowledge, and contribute to the PayloadCMS project by lowering the learning curve for Wordpress users.
 
 At this point in time, the GUI is under construction. Once the GUI scaffolding has been completed, actual development will occur.
 
