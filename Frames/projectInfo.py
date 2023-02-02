@@ -1,23 +1,13 @@
 import customtkinter
 from tkinter import filedialog
 
-class projectFrame(customtkinter.CTk):
-  def __init__(self, tab):
-    super().__init__()
+class projectFrame(customtkinter.CTkFrame):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
     #create project frame
-    self.project_frame = customtkinter.CTkFrame(
-      tab,
-      corner_radius=0,
-    )
-    self.project_frame.grid(
-      row=0,
-      column=0,
-      sticky='nsew'
-    )
-    self.project_frame.grid_columnconfigure((0,1), weight=1)
 
     self.projectlabel = customtkinter.CTkLabel(
-      self.project_frame,
+      self,
       text="Project Info",
       anchor="w")
     self.projectlabel.grid(
@@ -29,7 +19,7 @@ class projectFrame(customtkinter.CTk):
       )
 
     self.projectName = customtkinter.CTkEntry(
-      self.project_frame,
+      self,
       placeholder_text='Project Name',
       )
     self.projectName.grid(
@@ -42,7 +32,7 @@ class projectFrame(customtkinter.CTk):
       )
 
     self.UserName = customtkinter.CTkEntry(
-      self.project_frame,
+      self,
       placeholder_text='User Name',
     )
     self.UserName.grid(
@@ -54,7 +44,7 @@ class projectFrame(customtkinter.CTk):
     )
 
     self.Password = customtkinter.CTkEntry(
-      self.project_frame,
+      self,
       placeholder_text='Password',
     )
     self.Password.grid(
@@ -66,7 +56,7 @@ class projectFrame(customtkinter.CTk):
     )
 
     self.selectPath = customtkinter.CTkButton(
-      self.project_frame,
+      self,
       text='Choose Folder',
       command=self.select_Directory
     )
@@ -78,7 +68,7 @@ class projectFrame(customtkinter.CTk):
     )
 
     self.displayPath = customtkinter.CTkLabel(
-      self.project_frame,
+      self,
       text='No directory selected'
     )
     self.displayPath.grid(

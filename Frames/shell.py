@@ -1,24 +1,12 @@
 import customtkinter
 
-class shellFrame(customtkinter.CTk):
-  def __init__(self, tab):
-    super().__init__()
+class shellFrame(customtkinter.CTkFrame):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
     #create shell frame
-    self.shell_frame = customtkinter.CTkFrame(
-      tab,
-      corner_radius=0,
-    )
-    self.shell_frame.grid(
-      row=2,
-      column=0,
-      columnspan=3,
-      sticky="nsew"
-    )
-    self.shell_frame.grid_columnconfigure((0,1,2), weight = 1)
-    self.shell_frame.grid_rowconfigure(1,weight=1)
 
     self.shelllabel = customtkinter.CTkLabel(
-      self.shell_frame,
+      self,
       text="Shell",
       )
     self.shelllabel.grid(
@@ -30,7 +18,7 @@ class shellFrame(customtkinter.CTk):
       )
 
     self.shellDisplay = customtkinter.CTkTextbox(
-      self.shell_frame,
+      self,
       )
     self.shellDisplay.grid(
       row=1,
@@ -42,7 +30,7 @@ class shellFrame(customtkinter.CTk):
       )
 
     self.entry = customtkinter.CTkEntry(
-      self.shell_frame,
+      self,
       placeholder_text="Type your command here"
       )
     self.entry.grid(
@@ -55,7 +43,7 @@ class shellFrame(customtkinter.CTk):
       )
 
     self.commandSubmit = customtkinter.CTkButton(
-      self.shell_frame,
+      self,
       text='Submit',
       fg_color="transparent",
       border_width=2,

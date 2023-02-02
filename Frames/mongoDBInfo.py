@@ -1,22 +1,12 @@
 import customtkinter
 
-class mongoDBFrame(customtkinter.CTk):
-  def __init__(self, tab):
-    super().__init__()
+class mongoDBFrame(customtkinter.CTkFrame):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
     #Create MongoDB Frame
-    self.mongoDB_frame = customtkinter.CTkFrame(
-      tab,
-      corner_radius=0,
-    )
-    self.mongoDB_frame.grid(
-      row=0,
-      column=2,
-      sticky='ew'
-    )
-    self.mongoDB_frame.grid_columnconfigure((0,1),weight=1)
 
     self.mongoDBlabel = customtkinter.CTkLabel(
-      self.mongoDB_frame,
+      self,
       text="MongoDB Info",
       anchor="w"
       )
@@ -29,7 +19,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
 
     self.mongoDBURI = customtkinter.CTkLabel(
-      self.mongoDB_frame,
+      self,
       text='mongodb://0.0.0.0:27017/'
       )
     self.mongoDBURI.grid(
@@ -41,7 +31,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
 
     self.mongoDBDatabase = customtkinter.CTkEntry(
-      self.mongoDB_frame,
+      self,
       placeholder_text='Database Name'
       )
     self.mongoDBDatabase.grid(
@@ -53,7 +43,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
       
     self.mongoDBlabel = customtkinter.CTkLabel(
-      self.mongoDB_frame,
+      self,
       text="Database Management",
       anchor="w"
       )
@@ -66,7 +56,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
 
     self.createDBName = customtkinter.CTkEntry(
-      self.mongoDB_frame,
+      self,
       placeholder_text='Database Name'
       )
     self.createDBName.grid(
@@ -78,7 +68,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
 
     self.createDatabaseButton = customtkinter.CTkButton(
-      self.mongoDB_frame,
+      self,
       text='Create Database',
       command=self.createDatabase
       )
@@ -91,7 +81,7 @@ class mongoDBFrame(customtkinter.CTk):
       )
 
     self.launchCompassButton = customtkinter.CTkButton(
-      self.mongoDB_frame,
+      self,
       text='Open MongoDB Compass',
       command=self.launchCompass
       )

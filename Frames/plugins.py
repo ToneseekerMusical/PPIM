@@ -1,23 +1,12 @@
 import customtkinter
 
-class pluginFrame(customtkinter.CTk):
-  def __init__(self, tab):
-    super().__init__()
+class pluginFrame(customtkinter.CTkFrame):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
         #Plugin Select Frame
-    self.plugin_frame = customtkinter.CTkFrame(
-      tab,
-      corner_radius=0,
-    )
-    self.plugin_frame.grid(
-      row=1,
-      column=0,
-      columnspan=2,
-      sticky='new',
-    )
-    self.plugin_frame.grid_columnconfigure((0,1,2,3,4,5), weight=1)
 
     self.pluginLabel = customtkinter.CTkLabel(
-      self.plugin_frame,
+      self,
       text='Plugins'
     )
     self.pluginLabel.grid(
@@ -29,7 +18,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.plugincloudstorage = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Cloud Storage'
     )
     self.plugincloudstorage.grid(
@@ -41,7 +30,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.pluginseo = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='SEO'
     )
     self.pluginseo.grid(
@@ -52,7 +41,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.pluginformbuilder = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Form Builder'
     )
     self.pluginformbuilder.grid(
@@ -63,7 +52,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.plugins3uload = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='S3 Upload'
     )
     self.plugins3uload.grid(
@@ -74,7 +63,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadpluginlexical = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Lexical'
     )
     self.payloadpluginlexical.grid(
@@ -85,7 +74,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadpluginsearch = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Search'
     )
     self.payloadpluginsearch.grid(
@@ -96,7 +85,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadwebp = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='WebP'
     )
     self.payloadwebp.grid(
@@ -108,7 +97,7 @@ class pluginFrame(customtkinter.CTk):
     )
     
     self.payloadblurhashplugin = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Blurhash'
     )
     self.payloadblurhashplugin.grid(
@@ -119,7 +108,7 @@ class pluginFrame(customtkinter.CTk):
     )    
 
     self.pluginstripe = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Stripe'
     )
     self.pluginstripe.grid(
@@ -130,7 +119,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadauth0plugin = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Auth0'
     )
     self.payloadauth0plugin.grid(
@@ -141,7 +130,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadcloudinaryplugin = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Cloudinary'
     )
     self.payloadcloudinaryplugin.grid(
@@ -152,7 +141,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.pluginnesteddocs = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='NestedDocs'
     )
     self.pluginnesteddocs.grid(
@@ -163,7 +152,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadhashupload = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Hash Upload'
     )
     self.payloadhashupload.grid(
@@ -175,7 +164,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadpluginoauth = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='oAuth'
     )
     self.payloadpluginoauth.grid(
@@ -186,7 +175,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadimagekit = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Image Kit'
     )
     self.payloadimagekit.grid(
@@ -197,7 +186,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadrediscache = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Redis Cache'
     )
     self.payloadrediscache.grid(
@@ -208,7 +197,7 @@ class pluginFrame(customtkinter.CTk):
     )
     
     self.pluginzapier = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Zapier'
     )
     self.pluginzapier.grid(
@@ -219,7 +208,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadplugingoogleonetap = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Google One Tap'
     )
     self.payloadplugingoogleonetap.grid(
@@ -230,7 +219,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloadpluginphonefield = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Phone Field'
     )
     self.payloadpluginphonefield.grid(
@@ -242,7 +231,7 @@ class pluginFrame(customtkinter.CTk):
     )
 
     self.payloaddefaultroles = customtkinter.CTkCheckBox(
-      self.plugin_frame,
+      self,
       text='Default Roles'
     )
     self.payloaddefaultroles.grid(

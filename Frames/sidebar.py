@@ -1,27 +1,12 @@
 import customtkinter
 
-class sidebarFrame(customtkinter.CTk):
-  def __init__(self,window):
-    super().__init__()
+class SidebarFrame(customtkinter.CTkFrame):
+  def __init__(self,*args,**kwargs):
+    super().__init__(*args,**kwargs)
         # create sidebar frame with widgets
-    self.sidebar = customtkinter.CTkFrame(
-      window,
-      width=140,
-      corner_radius=0
-      )
-    self.sidebar.grid(
-      row=0,
-      column=0,
-      rowspan=5,
-      sticky="nsew"
-      )
-    self.sidebar.grid_rowconfigure(
-      5,
-      weight=1
-      )
       
     self.logo_label = customtkinter.CTkLabel(
-      self.sidebar,
+      self,
       text="PPIM",
       font=customtkinter.CTkFont(
         size=20,
@@ -37,7 +22,7 @@ class sidebarFrame(customtkinter.CTk):
     #management buttons
 
     self.startMongoDBButton = customtkinter.CTkButton(
-      self.sidebar,
+      self,
       text='Start MongoDB',
       command=self.startMongoDB
       )
@@ -49,7 +34,7 @@ class sidebarFrame(customtkinter.CTk):
       )
 
     self.stopMongoDBButton = customtkinter.CTkButton(
-      self.sidebar,
+      self,
       text='Stop MongoDB',
       command=self.stopMongoDB
       )
@@ -61,7 +46,7 @@ class sidebarFrame(customtkinter.CTk):
       )
 
     self.MongoStatus = customtkinter.CTkLabel(
-      self.sidebar,
+      self,
       text='MongoDB: Off',
       bg_color='grey',
       corner_radius=10,
@@ -75,7 +60,7 @@ class sidebarFrame(customtkinter.CTk):
 
     #updates and Settings
     self.options = customtkinter.CTkTabview(
-      self.sidebar,
+      self,
       150,
     )
     self.options.grid(
@@ -167,16 +152,16 @@ class sidebarFrame(customtkinter.CTk):
       pady=(10, 0)
       )
 
-    self.scaling_optionemenu = customtkinter.CTkOptionMenu(
-      self.options.tab('settings'),
-      values=["80%", "90%", "100%", "110%", "120%"],
-      command=self.change_scaling_event)
-    self.scaling_optionemenu.grid(
-      row=4,
-      column=0,
-      padx=20,
-      pady=(10, 20)
-      )
+    #self.scaling_optionemenu = customtkinter.CTkOptionMenu(
+    #  self.options.tab('settings'),
+    #  values=["80%", "90%", "100%", "110%", "120%"],
+    #  command=self.change_scaling_event)
+    #self.scaling_optionemenu.grid(
+    #  row=4,
+    #  column=0,
+    #  padx=20,
+    #  pady=(10, 20)
+    #  )
 
     # set default values
     #self.progressbar_1.configure(mode="indeterminnate")

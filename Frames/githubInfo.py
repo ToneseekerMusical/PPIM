@@ -1,22 +1,12 @@
 import customtkinter
 
-class githubFrame(customtkinter.CTk):
-  def __init__(self, tab):
-    super().__init__()
+class githubFrame(customtkinter.CTkFrame):
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
         #create github frame
-    self.github_frame = customtkinter.CTkFrame(
-      tab,
-      corner_radius=0,
-    )
-    self.github_frame.grid(
-      row=0,
-      column=1,
-      sticky='nsew'
-    )
-    self.github_frame.grid_columnconfigure((0,1,2), weight=1)
 
     self.githublabel = customtkinter.CTkLabel(
-      self.github_frame,
+      self,
       text="Github Info",
       anchor="w")
     self.githublabel.grid(
@@ -28,7 +18,7 @@ class githubFrame(customtkinter.CTk):
       )
     
     self.repositoryName = customtkinter.CTkEntry(
-      self.github_frame,
+      self,
       placeholder_text='Repository Name'
     )
     self.repositoryName.grid(
@@ -41,7 +31,7 @@ class githubFrame(customtkinter.CTk):
     )
 
     self.repoURL = customtkinter.CTkLabel(
-      self.github_frame,
+      self,
       text='Your ropository URL will appear here'
     )
     self.repoURL.grid(
@@ -54,7 +44,7 @@ class githubFrame(customtkinter.CTk):
     )
 
     self.openRepo = customtkinter.CTkButton(
-      self.github_frame,
+      self,
       text='View on Github',
       command=self.viewRepo
     )
@@ -66,7 +56,7 @@ class githubFrame(customtkinter.CTk):
     )
 
     self.cloneRepoURL = customtkinter.CTkEntry(
-      self.github_frame,
+      self,
       placeholder_text='Paste the Github URL here'
     )
     self.cloneRepoURL.grid(
@@ -79,7 +69,7 @@ class githubFrame(customtkinter.CTk):
     )
 
     self.cloneRepoToggle = customtkinter.CTkSwitch(
-      self.github_frame,
+      self,
       text='Clone Repo?',
       command=self.cloneRepo
     )

@@ -5,34 +5,58 @@ from Frames.plugins import pluginFrame
 from Frames.projectInfo import projectFrame
 from Frames.shell import shellFrame
 
-class tabView(customtkinter.CTk):
-  def __init__(self,window):
+class newProject():
+  def __init__(self,tabview:customtkinter.CTkTabview,tabname:str):
     super().__init__()
         # create tabview
-    self.tabview = customtkinter.CTkTabview(window)
-    self.tabview.grid(
+    tabview.grid(
       row=0,
       column=1,
       sticky="nsew")
-    self.tabview.add(" + ")
-    self.tabview.tab(" + ").grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
-    self.tabview.tab(" + ").grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
+    tabview.add(tabname)
+    tabview.tab(tabname).grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
+    tabview.tab(tabname).grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
 
     #Create Project Frame
-    self.projectInfo = projectFrame(self.tabview.tab(' + '))
+    self.projectInfo = projectFrame(tabview.tab(tabname),corner_radius=0)
+    self.projectInfo.grid(
+      row=0,
+      column=0,
+      sticky='nsew'
+    )
+    self.projectInfo.grid_columnconfigure((0,1), weight=1)
 
     #Create Github Frame
-    self.github = githubFrame(self.tabview.tab(' + '))
+    self.github = githubFrame(tabview.tab(tabname),corner_radius=0,)
+    self.github.grid(
+      row=0,
+      column=1,
+      sticky='nsew'
+    )
+    self.github.grid_columnconfigure((0,1,2), weight=1)
 
     #Create MongoDB Frame
-    self.mongoDB = mongoDBFrame(self.tabview.tab(' + '))
+    self.mongoDB = mongoDBFrame(tabview.tab(tabname),corner_radius=0,)
+    self.mongoDB.grid(
+      row=0,
+      column=2,
+      sticky='ew'
+    )
+    self.mongoDB.grid_columnconfigure((0,1),weight=1)
 
     #Create Plugin Frame
-    self.plugins = pluginFrame(self.tabview.tab(' + '))
+    self.plugins = pluginFrame(tabview.tab(tabname), corner_radius=0)
+    self.plugins.grid(
+      row=1,
+      column=0,
+      columnspan=2,
+      sticky='new',
+    )
+    self.plugins.grid_columnconfigure((0,1,2,3,4,5), weight=1)
 
     #Create Payload Instance Frame
     self.createInstance_frame = customtkinter.CTkFrame(
-      self.tabview.tab(' + '),
+      tabview.tab(tabname),
       corner_radius=0
     )
     self.createInstance_frame.grid(
@@ -57,7 +81,15 @@ class tabView(customtkinter.CTk):
       )
 
     #Create Shell Frame
-    self.shell = shellFrame(self.tabview.tab(' + '))
+    self.shell = shellFrame(tabview.tab(tabname), corner_radius=0)
+    self.shell.grid(
+      row=2,
+      column=0,
+      columnspan=3,
+      sticky="nsew"
+    )
+    self.shell.grid_columnconfigure((0,1,2), weight = 1)
+    self.shell.grid_rowconfigure(1,weight=1)
 
     # set default values
     self.newPayloadInstance.configure(state='disabled')
