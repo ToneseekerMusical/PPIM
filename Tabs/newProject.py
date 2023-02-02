@@ -1,9 +1,9 @@
 import customtkinter
-from Frames.githubInfo import githubFrame
-from Frames.mongoDBInfo import mongoDBFrame
-from Frames.plugins import pluginFrame
-from Frames.projectInfo import projectFrame
-from Frames.shell import shellFrame
+from Frames.NewProject.NewProjectGithub import githubFrame
+from Frames.NewProject.NewProjectDBInfo import mongoDBFrame
+from Frames.NewProject.NewProjectPlugins import pluginFrame
+from Frames.NewProject.NewProjectInfo import projectFrame
+from Frames.Shell import shellFrame
 
 class newProject():
   def __init__(self,tabview:customtkinter.CTkTabview,tabname:str):
@@ -67,12 +67,12 @@ class newProject():
 
     self.createInstance_frame.grid_columnconfigure(0, weight=1)
     self.createInstance_frame.grid_rowconfigure(0, weight=1)
-    self.newPayloadInstance = customtkinter.CTkButton(
+    self.newPayloadButton = customtkinter.CTkButton(
       self.createInstance_frame,
       text='Create New Project',
       command=self.createNewPayloadSite
       )
-    self.newPayloadInstance.grid(
+    self.newPayloadButton.grid(
       row=0,
       column=0,
       padx=20,
@@ -92,7 +92,8 @@ class newProject():
     self.shell.grid_rowconfigure(1,weight=1)
 
     # set default values
-    self.newPayloadInstance.configure(state='disabled')
+    #only enable button when  
+    self.newPayloadButton.configure(state='disabled')
   
   def createNewPayloadSite(self):
     print("createNewPayloadSite")

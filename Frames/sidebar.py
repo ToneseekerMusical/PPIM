@@ -152,16 +152,16 @@ class SidebarFrame(customtkinter.CTkFrame):
       pady=(10, 0)
       )
 
-    #self.scaling_optionemenu = customtkinter.CTkOptionMenu(
-    #  self.options.tab('settings'),
-    #  values=["80%", "90%", "100%", "110%", "120%"],
-    #  command=self.change_scaling_event)
-    #self.scaling_optionemenu.grid(
-    #  row=4,
-    #  column=0,
-    #  padx=20,
-    #  pady=(10, 20)
-    #  )
+    self.scaling_optionemenu = customtkinter.CTkOptionMenu(
+      self.options.tab('settings'),
+      values=["80%", "90%", "100%", "110%", "120%"],
+      command=self.change_scaling_event)
+    self.scaling_optionemenu.grid(
+      row=4,
+      column=0,
+      padx=20,
+      pady=(10, 20)
+      )
 
     # set default values
     #self.progressbar_1.configure(mode="indeterminnate")
@@ -169,13 +169,11 @@ class SidebarFrame(customtkinter.CTkFrame):
     #self.progressbar_1.start()
   
   def change_appearance_mode_event(self, new_appearance_mode: str):
-    #customtkinter.set_appearance_mode(new_appearance_mode)
-    print('appearance')
+    customtkinter.set_appearance_mode(new_appearance_mode)
 
   def change_scaling_event(self, new_scaling: str):
-    print('GUI Scale')
-    #new_scaling_float = int(new_scaling.replace("%", "")) / 100
-    #customtkinter.set_widget_scaling(new_scaling_float)
+    new_scaling_float = int(new_scaling.replace("%", "")) / 100
+    customtkinter.set_widget_scaling(new_scaling_float)
   
   def startMongoDB(self):
     print("startMongoDB")
