@@ -5,6 +5,7 @@ logs
 
 #Cache
 *.pyc
+*/_pycache_/
 
 # Dependency directories
 node/
