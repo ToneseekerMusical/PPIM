@@ -1,0 +1,9 @@
+### Node ###
+# Logs
+logs
+*.log
+
+# Dependency directories
+node/
+VSCode/
+mongoDB/
