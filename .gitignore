@@ -3,6 +3,9 @@
 logs
 *.log
 
+#Cache
+*.pyc
+
 # Dependency directories
 node/
 VSCode/
