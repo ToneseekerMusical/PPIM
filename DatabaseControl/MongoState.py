@@ -1,5 +1,8 @@
 import pathlib
 from subprocess import Popen, DETACHED_PROCESS, run
+from shutil import which
+
+#Which is returning none even though programs are in system path
 
 def selectFile(path,file):
   path = path.iterdir()
@@ -30,4 +33,4 @@ def stopMongoDB():
 def startCompass():
    run('MongoDBCompass')
 
-startMongoDB()
+print(which('MongoDBCompass'))
