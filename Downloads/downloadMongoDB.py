@@ -53,5 +53,3 @@ def downloadMongoDB():
         urlretrieve(mongoInfo['url'],'Installs/'+mongoInfo['filename'])
     else:
         print('LTS Mongo already downloaded')
-
-downloadMongoDB()

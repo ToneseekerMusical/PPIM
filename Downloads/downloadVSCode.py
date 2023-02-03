@@ -11,4 +11,3 @@ def downloadVSCode():
         urlretrieve(vscode_url, 'Installs/'+filename)
     else:
         print('LTS VS Code already downloaded')
-downloadVSCode()

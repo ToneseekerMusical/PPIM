@@ -61,5 +61,3 @@ def downloadNodeJS():
         urlretrieve(nodeInfo['url'],'Installs/'+nodeInfo['filename'])
     else:
         print('LTS Node already Downloaded')
-        
-downloadNodeJS()
