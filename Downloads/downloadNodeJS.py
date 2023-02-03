@@ -4,8 +4,6 @@ import json
 import platform
 import os
 
-nodeJS_JSON = "https://nodejs.org/download/release/index.json"
-
 # Opens a JSON file and returns the json in a python readable format
 def parseJson(url):
     response = urlopen(url)
@@ -53,10 +51,15 @@ def nodeJSDownloadURL(url):
     nodeVer = architectureCheck(nodeVer,osVer['arch'])
     nodeVer = osSelect(nodeVer,osVer['system'])
     nodeDownloadURL = "https://nodejs.org/dist/" + nodeVer['version'] + '/node-' + nodeVer['version'] + '-' + nodeVer['files'][0]
-    return nodeDownloadURL
+    nodeInfo = {'url':nodeDownloadURL,'filename':'node-' + nodeVer['version'] + '-' + nodeVer['files'][0]}
+    return nodeInfo
 
-def downloadNodeJS(url):
-    node = nodeJSDownloadURL(url)
-    urlretrieve(node,'node.zip')
-
-downloadNodeJS(nodeJS_JSON)
+def downloadNodeJS():
+    nodeJSON = "https://nodejs.org/download/release/index.json"
+    nodeInfo = nodeJSDownloadURL(nodeJSON)
+    if not os.path.exists('Installs/'+nodeInfo['filename']):
+        urlretrieve(nodeInfo['url'],'Installs/'+nodeInfo['filename'])
+    else:
+        print('LTS Node already Downloaded')
+        
+downloadNodeJS()

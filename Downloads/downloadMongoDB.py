@@ -4,8 +4,6 @@ import json
 import platform
 import os
 
-mongoDB_JSON = "http://downloads.mongodb.org.s3.amazonaws.com/current.json"
-
 # Opens a JSON file and returns the json in a python readable format
 def parseJson(url):
     response = urlopen(url)
@@ -44,10 +42,16 @@ def MongoDBDownloadURL(url):
     ver = selectEdition(ver,'base')
     ver = osSelect(ver,osVer['system'])
     downloadURL = ver['downloads'][0]['archive']['url']
-    return downloadURL
+    filename = downloadURL.split('/')[-1]
+    mongoInfo = {'url': downloadURL, 'filename':filename}
+    return mongoInfo
 
-def downloadMongoDB(url):
-    mongoDB = MongoDBDownloadURL(url)
-    urlretrieve(mongoDB,'mongo.zip')
+def downloadMongoDB():
+    mongoJSON = "http://downloads.mongodb.org.s3.amazonaws.com/current.json"
+    mongoInfo = MongoDBDownloadURL(mongoJSON)
+    if not os.path.exists('Installs/'+mongoInfo['filename']):
+        urlretrieve(mongoInfo['url'],'Installs/'+mongoInfo['filename'])
+    else:
+        print('LTS Mongo already downloaded')
 
-downloadMongoDB(mongoDB_JSON)
+downloadMongoDB()

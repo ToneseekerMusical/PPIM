@@ -10,8 +10,12 @@ logs
 # Archives
 *.zip
 
-# Dependency directories
-node/
-VSCode/
-mongoDB/
-venv/
+# Extra Instalation directories
+Installs/*
+
+#Allow Python Files in top level of Installs Directory
+!Installs/*.py
+
+# Virtual Environment
+venv
+venv/*
