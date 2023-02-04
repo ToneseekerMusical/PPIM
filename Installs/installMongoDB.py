@@ -5,14 +5,17 @@ import ctypes
 from subprocess import Popen
 from shutil import which
 
-def selectFile(file):
+def selectFile(file,program=False):
+  if program == False:
+    program = file
   path = pathlib.Path(__file__).parent.iterdir()
   dirs = list(filter(lambda path: path.is_dir(), path))
-  mongoDir = [x for x in dirs if 'mongo' in x.name][0].iterdir()
-  mongoBin = list(filter(lambda path: path.is_dir(), mongoDir))[0].iterdir()
-  bin = [x for x in mongoBin if file in x.name.lower()]
+  dir = [x for x in dirs if program in x.name][0].iterdir()
+  binDir = list(filter(lambda path: path.is_dir(), dir))[0].iterdir()
+  bin = [x for x in binDir if file+'.exe' in x.name.lower()][0]
   return bin
 
+#checks
 def checkPATH(path, env):
   p = str(path)[0].upper() + str(path)[1:]
   if p in env:
@@ -20,16 +23,15 @@ def checkPATH(path, env):
   else:
     return False
 
-def setPath(path, env):
+def setPath(path, env, ignoreRegex=False):
   p = str(path)[0].upper() + str(path)[1:]
 
-  #remove empty values
-  env = [x for x in env if x != '']
-
   #Replace absolute paths prefixes with wildcards
-  env = [sub.replace('C:\WINDOWS', '%SystemRoot%') for sub in env]
-  env = [(re.sub(r'(.*)\\Users\\(.*)\\AppData',"%USERPROFILE%\\\\AppData",x)) for x in env]
+  if ignoreRegex == False:
+    env = [sub.replace('C:\WINDOWS', '%SystemRoot%') for sub in env]
+    env = [(re.sub(r'(.*)\\Users\\(.*)\\AppData',"%USERPROFILE%\\\\AppData",x)) for x in env]
   
+  #if Path is not in environment Variables, add it
   if p not in env:
     env.append(p)
     env = ';'.join(env)
@@ -48,26 +50,28 @@ def setPath(path, env):
   print('Set Path Ran!')
   return env
 
+#Runs powershell install script for Compass
 def installCompass():
-  file = 'compass'
-  file = selectFile(file)[0]
+  file = selectFile('compass','mongodb')[0]
   Popen([
     "powershell.exe",
     str(file)
   ])
-        
+
+#checks if Compass and MongoDB are in path, if not install them
 def setupMongoDB():
-  file = 'mongo'
-  file = selectFile(file)[0]
-  folder = file.parent
-  cpath = '%USERPROFILE%\AppData\Local\MongoDBCompass'
   env = str(os.getenv('PATH')).split(';')
-  compass = which('MongoDBCompass')
+  env = [x for x in env if x != '']
+  files = ('mongod','mongosh')
+  user = os.getlogin()
+  cpath = 'C:\\Users\\'+user+'\\AppData\\Local\\MongoDBCompass'
+  for file in files:
+    f = selectFile(file)
+    folder = f.parent
+    if checkPATH(folder, env) == False:
+      env = setPath(folder, env)
   
-  if checkPATH(folder, env) == False:
-    env = setPath(folder, env)
-  
-  if compass is None:
+  if which('MongoDBCompass') is None:
     installCompass()
     setPath(cpath, env)
 

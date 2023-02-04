@@ -2,35 +2,29 @@ import pathlib
 from subprocess import Popen, DETACHED_PROCESS, run
 from shutil import which
 
-#Which is returning none even though programs are in system path
-
-def selectFile(path,file):
-  path = path.iterdir()
-  path = list(filter(lambda path: path.is_dir(), path))
-  path = [x for x in path if 'mongo' in x.name][0].iterdir()
-  path = list(filter(lambda path: path.is_dir(), path))[0].iterdir()
-  bin = [x for x in path if file in x.name.lower()]
-  return bin
-
+#Checks if database folder exists, if not, creates it
+#and starts MongoDB
+#Need to add password settings!
 def startMongoDB():
     path = pathlib.Path(__file__).parent.parent
     srvPath = path.joinpath(str(path)+'/srv/mongodb')
     if srvPath.is_dir() == False:
       srvPath.mkdir(parents=True)
-    print(srvPath)
 
     Popen([
       "mongod.exe",
       "--dbpath", str(srvPath),
     ], creationflags=DETACHED_PROCESS)
 
+#Cannot Shut Down MongoDB at this time
 def stopMongoDB():
    Popen([
       "mongod.exe",
       "--shutdown"
    ])
 
+#Starts Compass
 def startCompass():
-   run('MongoDBCompass')
+   Popen('mongodbcompass.exe')
 
-print(which('MongoDBCompass'))
+stopMongoDB()
