@@ -27,4 +27,4 @@ def stopMongoDB():
 def startCompass():
    Popen('mongodbcompass.exe')
 
-stopMongoDB()
+startCompass()

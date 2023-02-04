@@ -3,8 +3,6 @@ import os
 
 def ExtractArchives(path,filename,extraFolder=False):
   with ZipFile(path + '\\' + filename + '.zip', 'r') as zObject:
-    dir = path+'\\'+filename
-    print(dir)
     if os.path.isdir(path+'\\'+filename):
       print('Files already exist!')
     else:
@@ -19,6 +17,8 @@ def ExtractAllDependencies():
   files = [x for x in files if '.zip' in x ]
   for file in files:
     if 'vscode' in file.lower():
+      ExtractArchives(path,file[:-4],True)
+    elif 'compass' in file.lower():
       ExtractArchives(path,file[:-4],True)
     else:
       ExtractArchives(path,file[:-4])
