@@ -11,10 +11,10 @@ logs
 *.zip
 
 # Extra Instalation directories
-Installs/*
+lib/*
 
-#Allow Python Files in top level of Installs Directory
-!Installs/*.py
+#Allow Python Files in top level of Install Directory
+!/*.py
 
 # Virtual Environment
 venv

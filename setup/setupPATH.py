@@ -2,13 +2,13 @@ import pathlib
 import os
 import re
 import ctypes
-from subprocess import Popen
-from shutil import which
 
 def selectPATH(file,program=False):
   if program == False:
     program = file
-  path = pathlib.Path(__file__).parent.iterdir()
+  path = pathlib.Path
+  cwd = str(pathlib.Path.cwd())
+  path = path(cwd+'\\lib\\').iterdir()
   dirs = list(filter(lambda path: path.is_dir(), path))
   if file in ('mongodb', 'mongosh'):
     binDir = [x for x in dirs if program in x.name][0].iterdir()
@@ -52,16 +52,17 @@ def setPath(paths:list, env, ignoreRegex=False):
   return env
 
 #checks if Compass and MongoDB are in path, if not install them
-def setupPATH():
+def setupPATH(files=('mongodb','mongosh','compass','node','vscode')):
   env = str(os.getenv('PATH')).split(';')
   env = [x for x in env if x != '']
-  files = ('mongodb','mongosh','compass','node','vscode')
   paths = []
   for file in files:
     paths.append(selectPATH(file))
   paths = checkPATH(paths,env)
   if len(paths) > 0:
     print(str(len(paths))+' file(s) not in path')
-    env = setPath(paths, env)
+    for p in paths:
+      print(p)
+    setPath(paths, env)
 
 setupPATH()

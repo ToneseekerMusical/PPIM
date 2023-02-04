@@ -1,8 +1,8 @@
-# imported the requests library
 from urllib.request import urlopen, urlretrieve
 import json
 import platform
 import os
+import pathlib
 
 # Opens a JSON file and returns the json in a python readable format
 def parseJson(url):
@@ -22,7 +22,10 @@ def latestMongoDB(url):
     return lts[0]
 
 def latestCompassAndShell(url):
-    return parseJson(url)['versions'][0]['platform']
+    ver = parseJson(url)['versions'][0]
+    version = ver['version']
+    file = ver['platform']
+    return {'file':file,'version':version}
 
 def latestNodeJS(url):
     versionList = parseJson(url)
@@ -65,49 +68,61 @@ def parseMongoURL(program:str, url):
     osVer = osVersion()
     if program.lower() == 'mongodb':
         ver = latestMongoDB(url)
+        version = ver['version']
         ver = MongoDBSelectEdition(ver,'base')
         ver = MongoDBOSSelect(ver,osVer['system'])
         url = ver['archive']['url']
         filename = url.split('/')[-1]
-        return {'url': url, 'filename':filename}
+        return {'url': url, 'filename':filename, 'version':version}
     elif program.lower() in ('compass','mongosh'):
         ver = latestCompassAndShell(url)
-        ver = CompassAndShellOSSelect(ver,osVer['system'])
+        version = ver['version']
+        ver = CompassAndShellOSSelect(ver['file'],osVer['system'])
         url = ver[0]['download_link']
         filename = url.split('/')[-1]
         if program.lower() != 'mongosh':
             filename = filename.split('-')[1:]
             filename = '-'.join(filename)
-        return {'url': url, 'filename':filename}
+        return {'url': url, 'filename':filename, 'version':version}
 
 def parseNodeJSURL(url):
     osVer = osVersion()
     ver = latestNodeJS(url)
+    version = ver['version']
     ver = architectureCheck(ver,osVer['arch'])
-    #print(nodeVer)
     ver = NodeOSSelect(ver,osVer['system'])
     url = "https://nodejs.org/dist/" + ver['version'] + '/node-' + ver['version'] + '-' + ver['files'][0]
-    return {'url':url,'filename':'node-' + ver['version'] + '-' + ver['files'][0]}
+    return {'url':url,'filename':'node-' + ver['version'] + '-' + ver['files'][0],'version':version}
 
-def parseVSCodeURL(url):
-    url = urlopen(url)
-    cd = url.info()['Content-Disposition']
-    filename = cd.split('"')[1]
-    return{'url':url,'filename':filename}
+def downloadVSCode(path):
+    vscode_url = "https://update.code.visualstudio.com/latest/win32-x64-archive/stable"
+    vscodeVer = urlopen(vscode_url)
+    contentdisposition = vscodeVer.info()['Content-Disposition']
+    filename = contentdisposition.split('"')[1].split('-')[0]+'.zip'
+    if not os.path.exists(path+filename):
+        urlretrieve(vscode_url, path+filename)
+    else:
+        print('LTS VS Code already downloaded')
 
 #Downloads the archives
-def downloadMongoAndNode():
+def downloadAll():
+    path = pathlib.Path
+    cwd = str(pathlib.Path.cwd())
     downloadInfo = (
         parseMongoURL("mongodb","http://downloads.mongodb.org.s3.amazonaws.com/current.json"),
         parseMongoURL("compass","https://info-mongodb-com.s3.amazonaws.com/com-download-center/compass.json"),
         parseMongoURL("mongosh","https://s3.amazonaws.com/info-mongodb-com/com-download-center/mongosh.json"),
         parseNodeJSURL("https://nodejs.org/download/release/index.json"),
-        parseVSCodeURL("https://update.code.visualstudio.com/latest/win32-x64-archive/stable")
         )
     for download in downloadInfo:
-        if not os.path.exists('Installs/'+download['filename']):
-            urlretrieve(download['url'],'Installs/'+download['filename'])
+        if not path(cwd+'/lib/'+download['filename'][:-4]).exists():
+            if not path(cwd+'/tmp/'+download['filename']).exists():
+                if not path(cwd+'/tmp').exists():path(cwd+'/tmp').mkdir()
+                urlretrieve(download['url'],cwd+'\\tmp\\'+download['filename'].split('-')[0]+'.zip')
+            else:
+                print('Latest already downloaded!')
         else:
-            print('Latest already downloaded')
-
-downloadMongoAndNode()
+            print('Latest already Extracted!')
+    downloadVSCode(cwd+'\\tmp\\')
+    
+downloadAll()
