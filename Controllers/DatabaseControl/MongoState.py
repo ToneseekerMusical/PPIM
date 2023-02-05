@@ -1,6 +1,6 @@
 import pathlib
 import ctypes
-from subprocess import Popen, DETACHED_PROCESS, run
+from subprocess import Popen
 
 #Checks if database folder exists, if not, creates it
 #and starts MongoDB

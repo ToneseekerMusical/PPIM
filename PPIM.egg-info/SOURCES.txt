@@ -34,6 +34,16 @@ GUI/Views/Main.py
 GUI/Views/Settings.py
 GUI/Views/Setup.py
 GUI/Views/__init__.py
+Install/DownloadArchives.py
+Install/ExtractArchives.py
+Install/PPIMSetup.py
+Install/SetupPATH.py
+Install/__init__.py
+Install/install.py
+Install/GUI/__init__.py
+Install/GUI/Frames/__init__.py
+Install/GUI/Frames/install.py
+Install/GUI/Frames/paypal.py
 PPIM.egg-info/PKG-INFO
 PPIM.egg-info/SOURCES.txt
 PPIM.egg-info/dependency_links.txt
@@ -42,4 +52,5 @@ install/DownloadArchives.py
 install/ExtractArchives.py
 install/SetupPATH.py
 install/__init__.py
-install/install.py
+install/GUI/__init__.py
+install/GUI/Frames/__init__.py

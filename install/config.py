@@ -1,6 +1,6 @@
 import customtkinter as ctk
-import Install.GUI.Frames.install as Install
-import Install.GUI.Frames.paypal as Paypal
+import sys
+import os
 
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
@@ -20,7 +20,7 @@ class App(ctk.CTk):
 
     self.label = ctk.CTkLabel(
       self,
-      text='PayloadCMS Instance Manager',
+      text='Getting things ready...',
       font=ctk.CTkFont(
         size=20,
         weight="bold"
@@ -33,26 +33,10 @@ class App(ctk.CTk):
       pady=10,
       sticky='nsew'
       )
-    
-    self.paypal = Paypal.PaypalFrame(
-      self,
-    )
-    self.paypal.grid(
-      row=1,
-      column=0,
-      columnspan=2,
-      padx=10,
-      sticky='ew'
-    )
+  
+    self.after(1000, self.restart)
 
-    self.install = Install.InstallFrame(
-      self,
-      self,
-    )
-    self.install.grid(
-      row=2,
-      column=0,
-      padx=10,
-      pady=10,
-      sticky='ew'
-    )
+  def restart(self):
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
+    #write version info to database and remove install directory
