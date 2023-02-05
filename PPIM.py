@@ -26,13 +26,16 @@ class App(ctk.CTk):
 if __name__ == "__main__":
   path = pathlib.Path
   cwd = str(path.cwd())
-  if path(cwd+'\\Install').exists():
-      if not path(cwd+'\\Install\\setup.ppimcfg').exists():
-        import Install.install as inst
-        app = inst.App()
-      else:
-        import Install.config as config
-        app = config.App()
-  
+  #if path(cwd+'\\Install').exists():
+  #    if not path(cwd+'\\Install\\setup.ppimcfg').exists():
+  #      import Install.install as inst
+  #      app = inst.App()
+  #    else:
+  #      import Install.config as config
+  #      app = config.App()
+  #else: 
+  #  app=App()
+  import GUI.Views.Main as Main
+  app = Main.App()
   app.eval('tk::PlaceWindow . center')
   app.mainloop()

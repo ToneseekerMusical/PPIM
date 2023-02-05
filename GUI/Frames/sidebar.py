@@ -1,5 +1,5 @@
 import customtkinter
-import Controllers.DatabaseControl.MongoState as MongoControl
+import Controllers.Mongo as Mongo
 
 class SidebarFrame(customtkinter.CTkFrame):
   def __init__(self,*args,**kwargs):
@@ -25,7 +25,7 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.startMongoDBButton = customtkinter.CTkButton(
       self,
       text='Start MongoDB',
-      command=MongoControl.startMongoDB
+      command=Mongo.startDB
       )
     self.startMongoDBButton.grid(
       row=2,
@@ -37,7 +37,7 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.stopMongoDBButton = customtkinter.CTkButton(
       self,
       text='Stop MongoDB',
-      command=MongoControl.stopMongoDB
+      command=Mongo.stopDB
       )
     self.stopMongoDBButton.grid(
       row=3,

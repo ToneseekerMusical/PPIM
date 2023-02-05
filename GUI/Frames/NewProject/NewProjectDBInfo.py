@@ -1,5 +1,5 @@
 import customtkinter
-import Controllers.DatabaseControl.MongoState as MongoControl
+import Controllers.Mongo as Mongo
 
 class mongoDBFrame(customtkinter.CTkFrame):
   def __init__(self, *args, **kwargs):
@@ -83,7 +83,7 @@ class mongoDBFrame(customtkinter.CTkFrame):
     self.launchCompassButton = customtkinter.CTkButton(
       self,
       text='Open MongoDB Compass',
-      command=MongoControl.startCompass
+      command=Mongo.startCompass
       )
     self.launchCompassButton.grid(
       row=4,

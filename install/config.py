@@ -39,4 +39,4 @@ class App(ctk.CTk):
   def restart(self):
     python = sys.executable
     os.execl(python, python, * sys.argv)
-    #write version info to database and remove install directory
+    #write version info to database and config file
