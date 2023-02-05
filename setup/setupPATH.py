@@ -27,7 +27,7 @@ def checkPATH(paths:list, env):
       pathlist.append(p)
   return(pathlist)
 
-def setPath(paths:list, env, ignoreRegex=False):
+def addPATH(paths:list, env, ignoreRegex=False):
   #Replace absolute paths prefixes with wildcards
   if ignoreRegex == False:
     env = [sub.replace('C:\WINDOWS', '%SystemRoot%') for sub in env]
@@ -52,7 +52,7 @@ def setPath(paths:list, env, ignoreRegex=False):
   return env
 
 #checks if Compass and MongoDB are in path, if not install them
-def setupPATH(files=('mongodb','mongosh','compass','node','vscode')):
+def setPATH(files=('mongodb','mongosh','compass','node','vscode')):
   env = str(os.getenv('PATH')).split(';')
   env = [x for x in env if x != '']
   paths = []
@@ -63,6 +63,4 @@ def setupPATH(files=('mongodb','mongosh','compass','node','vscode')):
     print(str(len(paths))+' file(s) not in path')
     for p in paths:
       print(p)
-    setPath(paths, env)
-
-setupPATH()
+    addPATH(paths, env)

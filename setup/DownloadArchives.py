@@ -99,30 +99,34 @@ def downloadVSCode(path):
     vscodeVer = urlopen(vscode_url)
     contentdisposition = vscodeVer.info()['Content-Disposition']
     filename = contentdisposition.split('"')[1].split('-')[0]+'.zip'
+    version = contentdisposition.split('"')[1].split('-')[-1][:-4]
     if not os.path.exists(path+filename):
         urlretrieve(vscode_url, path+filename)
     else:
         print('LTS VS Code already downloaded')
+    return version
 
 #Downloads the archives
 def downloadAll():
     path = pathlib.Path
     cwd = str(pathlib.Path.cwd())
-    downloadInfo = (
-        parseMongoURL("mongodb","http://downloads.mongodb.org.s3.amazonaws.com/current.json"),
-        parseMongoURL("compass","https://info-mongodb-com.s3.amazonaws.com/com-download-center/compass.json"),
-        parseMongoURL("mongosh","https://s3.amazonaws.com/info-mongodb-com/com-download-center/mongosh.json"),
-        parseNodeJSURL("https://nodejs.org/download/release/index.json"),
-        )
-    for download in downloadInfo:
-        if not path(cwd+'/lib/'+download['filename'][:-4]).exists():
-            if not path(cwd+'/tmp/'+download['filename']).exists():
+    downloadInfo = {
+        'MongoDB':parseMongoURL("mongodb","http://downloads.mongodb.org.s3.amazonaws.com/current.json"),
+        'Compass':parseMongoURL("compass","https://info-mongodb-com.s3.amazonaws.com/com-download-center/compass.json"),
+        'Mongosh':parseMongoURL("mongosh","https://s3.amazonaws.com/info-mongodb-com/com-download-center/mongosh.json"),
+        'Node':parseNodeJSURL("https://nodejs.org/download/release/index.json"),
+        }
+    versions = {}
+    for dependency, download in downloadInfo.items():
+        versions[dependency] = download['version']
+        if not path(cwd+'/lib/'+dependency).exists():
+            if not path(cwd+'/tmp/'+dependency.lower()+'.zip').exists():
                 if not path(cwd+'/tmp').exists():path(cwd+'/tmp').mkdir()
-                urlretrieve(download['url'],cwd+'\\tmp\\'+download['filename'].split('-')[0]+'.zip')
+                urlretrieve(download['url'],cwd+'\\tmp\\'+dependency.lower()+'.zip')
+                print(dependency + ' downloaded!')
             else:
                 print('Latest already downloaded!')
-        else:
-            print('Latest already Extracted!')
-    downloadVSCode(cwd+'\\tmp\\')
-    
-downloadAll()
+    if not path(cwd+'/lib/VSCode').exists():
+        versions['vscode'] = downloadVSCode(cwd+'\\tmp\\')
+        print('VS Code downloaded!')
+    return versions

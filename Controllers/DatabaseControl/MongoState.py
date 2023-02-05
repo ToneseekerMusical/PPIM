@@ -1,6 +1,6 @@
 import pathlib
+import ctypes
 from subprocess import Popen, DETACHED_PROCESS, run
-from shutil import which
 
 #Checks if database folder exists, if not, creates it
 #and starts MongoDB
@@ -14,15 +14,23 @@ def startMongoDB():
     Popen([
       "mongod.exe",
       "--dbpath", str(srvPath),
-    ], creationflags=DETACHED_PROCESS)
+    ], creationflags=DETACHED_PROCESS,)
 
 #Cannot Shut Down MongoDB at this time
 def stopMongoDB():
-   Popen([
-      "mongod.exe",
-      "--shutdown"
-   ])
+    commands = u"pkill -2 $USER mongodb"
+    
+    ctypes.windll.shell32.ShellExecuteW(
+      None,
+      u"runas",
+      u"powershell.exe",
+      commands,
+      None,
+      1
+    )
 
 #Starts Compass
 def startCompass():
    Popen('mongodbcompass.exe')
+
+stopMongoDB()
