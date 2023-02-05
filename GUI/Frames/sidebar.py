@@ -1,4 +1,5 @@
 import customtkinter
+import Controllers.DatabaseControl.MongoState as MongoControl
 
 class SidebarFrame(customtkinter.CTkFrame):
   def __init__(self,*args,**kwargs):
@@ -24,7 +25,7 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.startMongoDBButton = customtkinter.CTkButton(
       self,
       text='Start MongoDB',
-      command=self.startMongoDB
+      command=MongoControl.startMongoDB
       )
     self.startMongoDBButton.grid(
       row=2,
@@ -36,7 +37,7 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.stopMongoDBButton = customtkinter.CTkButton(
       self,
       text='Stop MongoDB',
-      command=self.stopMongoDB
+      command=MongoControl.stopMongoDB
       )
     self.stopMongoDBButton.grid(
       row=3,
@@ -133,7 +134,8 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(
       self.options.tab('settings'), 
       values=["Light", "Dark", "System"],
-      command=self.change_appearance_mode_event)
+      command=self.change_appearance_mode_event
+      )
     self.appearance_mode_optionemenu.grid(
       row=2,
       column=0,
@@ -155,7 +157,8 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.scaling_optionemenu = customtkinter.CTkOptionMenu(
       self.options.tab('settings'),
       values=["80%", "90%", "100%", "110%", "120%"],
-      command=self.change_scaling_event)
+      command=self.change_scaling_event
+      )
     self.scaling_optionemenu.grid(
       row=4,
       column=0,

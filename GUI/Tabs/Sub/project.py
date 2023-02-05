@@ -1,11 +1,11 @@
 import customtkinter
-from Frames.Projects.DBInfo import DBInfo
-from Frames.Projects.Deploy import Deploy
-from Frames.Projects.DevTools import devTools
-from Frames.Projects.GithubInfo import github
-from Frames.Projects.PluginManagement import pluginManager
-from Frames.Projects.ProjectInfo import projectInfo
-from Frames.Shell import shellFrame
+from GUI.Frames.Projects.DBInfo import DBInfo
+from GUI.Frames.Projects.Deploy import Deploy
+from GUI.Frames.Projects.DevTools import devTools
+from GUI.Frames.Projects.GithubInfo import github
+from GUI.Frames.Projects.PluginManagement import pluginManager
+from GUI.Frames.Projects.ProjectInfo import projectInfo
+from GUI.Frames.Shell import shellFrame
 
 class ProjectTab():
   def __init__(self,tabview:customtkinter.CTkTabview,tabname:str):

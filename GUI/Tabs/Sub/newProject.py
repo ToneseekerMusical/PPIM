@@ -1,9 +1,9 @@
 import customtkinter
-from Frames.NewProject.NewProjectGithub import githubFrame
-from Frames.NewProject.NewProjectDBInfo import mongoDBFrame
-from Frames.NewProject.NewProjectPlugins import pluginFrame
-from Frames.NewProject.NewProjectInfo import projectFrame
-from Frames.Shell import shellFrame
+from GUI.Frames.NewProject.NewProjectGithub import githubFrame
+from GUI.Frames.NewProject.NewProjectDBInfo import mongoDBFrame
+from GUI.Frames.NewProject.NewProjectPlugins import pluginFrame
+from GUI.Frames.NewProject.NewProjectInfo import projectFrame
+from GUI.Frames.Shell import shellFrame
 
 class newProject():
   def __init__(self,tabview:customtkinter.CTkTabview,tabname:str):

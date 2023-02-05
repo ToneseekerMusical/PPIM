@@ -6,7 +6,9 @@ from subprocess import Popen, DETACHED_PROCESS, run
 #and starts MongoDB
 #Need to add password settings!
 def startMongoDB():
-    path = pathlib.Path(__file__).parent.parent
+    path = pathlib.Path()
+    cwd = str(path.cwd())
+    srv = path.joinpath(cwd+'\\srv\\mongodb\\')
     srvPath = path.joinpath(str(path)+'/srv/mongodb')
     if srvPath.is_dir() == False:
       srvPath.mkdir(parents=True)
@@ -14,7 +16,7 @@ def startMongoDB():
     Popen([
       "mongod.exe",
       "--dbpath", str(srvPath),
-    ], creationflags=DETACHED_PROCESS,)
+    ])
 
 #Cannot Shut Down MongoDB at this time
 def stopMongoDB():
@@ -32,5 +34,3 @@ def stopMongoDB():
 #Starts Compass
 def startCompass():
    Popen('mongodbcompass.exe')
-
-stopMongoDB()

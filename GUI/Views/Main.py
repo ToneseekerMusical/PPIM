@@ -1,6 +1,6 @@
 import customtkinter
-from Frames.sidebar import SidebarFrame
-from Tabs.tabview import tabView
+from GUI.Frames import sidebar
+import GUI.Tabs.Main.tabView as tabs
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -20,7 +20,7 @@ class App(customtkinter.CTk):
     self.grid_rowconfigure(0, weight=1)
 
     #Create Side Bar
-    self.sidebar = SidebarFrame(self,width=140,corner_radius=0)
+    self.sidebar = sidebar.SidebarFrame(self,width=140,corner_radius=0)
     self.sidebar.grid(
       row=0,
       column=0,
@@ -31,7 +31,7 @@ class App(customtkinter.CTk):
       5,
       weight=1
       )
-    self.tabs = tabView(self)
+    self.tabs = tabs.tabView(self)
     self.tabs.grid(
       row=0,
       column=1,

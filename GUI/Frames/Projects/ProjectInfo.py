@@ -32,7 +32,7 @@ class projectInfo(customtkinter.CTkFrame):
     self.copyUser = customtkinter.CTkButton(
       self,
       text='Copy Username',
-      command=self.copyFieldText(self.userName.get())
+      command=self.copyFieldText
     )
     self.copyUser.grid(
       row=1,
@@ -53,7 +53,7 @@ class projectInfo(customtkinter.CTkFrame):
     self.copyPass = customtkinter.CTkButton(
       self,
       text='Copy Password',
-      command=self.copyFieldText(self.password)
+      command=self.copyFieldText
     )
     self.copyPass.grid(
       row=2,
