@@ -11,8 +11,9 @@ def setup():
     cfg = {"versions":versions,"PATHS":paths}
     try:
         cfgFile = open('Install/setup.ppimcfg','w')
-        cfgFile.write(str(cfg))
+        cfgFile.write(str(cfg).replace("'",'"'))
         cfgFile.close()
+
     except:
         print('Setup already ran, are you doing something wrong?')
     path = pathlib.Path

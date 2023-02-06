@@ -32,6 +32,8 @@ class App(ctk.CTk):
       pady=10,
       sticky='nsew'
       )
+    PPIMdbSetup()
+    self.restart()
     
     
 

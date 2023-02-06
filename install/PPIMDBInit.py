@@ -36,6 +36,7 @@ def PPIMdbSetup():
       None,
       0
     )
+
   sysinf = json.load(open(Path(cwd+'\\Install\\setup.ppimcfg')))
   db = Mongo.dbConnect(
     "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
@@ -46,4 +47,7 @@ def PPIMdbSetup():
     settings = Database.Database.create_collection(db,'Settings',check_exists=True,capped=True,max=1,size=52428800)
   except:
     system = Database.Database.get_collection(db,'System')
-  system.insert_one(sysinf)
+  try:
+    system.insert_one(sysinf)
+  except:
+    pass

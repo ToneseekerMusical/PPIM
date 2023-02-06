@@ -40,7 +40,8 @@ if __name__ == "__main__":
     "PPIM"
     )
   sysInf = database.Database.get_collection(db,'System').find_one()
-  if sysInf:
+  print(sysInf)
+  if sysInf != None:
     import GUI.Views.Main as Main
     app = Main.App()
   elif path(cwd+'\\Install').exists():

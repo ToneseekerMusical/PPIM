@@ -167,6 +167,8 @@ class SidebarFrame(customtkinter.CTkFrame):
       padx=20,
       pady=(10, 20)
       )
+    
+    self.monitorMongoDB()
 
     # set default values
     #self.progressbar_1.configure(mode="indeterminnate")

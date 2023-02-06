@@ -41,8 +41,8 @@ def runAsAdmin(cmdLine=None, wait=True):
   # XXX TODO: isn't there a function or something we can call to massage command line params?
   params = " ".join(['"%s"' % (x,) for x in cmdLine[1:]])
   cmdDir = ''
-  showCmd = win32con.SW_SHOWNORMAL
-  #showCmd = win32con.SW_HIDE
+  #showCmd = win32con.SW_SHOWNORMAL
+  showCmd = win32con.SW_HIDE
   lpVerb = 'runas'  # causes UAC elevation prompt.
 
   # print "Running", cmd, params

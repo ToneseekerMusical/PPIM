@@ -2,8 +2,7 @@ import customtkinter as ctk
 import GUI.Buttons.exit as Exit
 import GUI.Frames.progress as Progress
 import Install.PPIMSetup as Setup
-import sys
-import os
+import os, sys
 
 class InstallFrame(ctk.CTkFrame):
   def __init__(
@@ -52,3 +51,7 @@ class InstallFrame(ctk.CTkFrame):
       columnspan=2,
       sticky='ew'
     )
+    self.progress.progress.start()
+    Setup.setup()
+    python = sys.executable
+    os.execl(python, python, * sys.argv)

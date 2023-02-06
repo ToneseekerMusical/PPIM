@@ -12,7 +12,8 @@ class progressFrame(ctk.CTkFrame):
     self.grid_columnconfigure(0,weight=1)
 
     self.progress = ctk.CTkProgressBar(
-      self
+      self,
+      mode='indeterminate'
     )
     self.progress.grid(
       row=0,
