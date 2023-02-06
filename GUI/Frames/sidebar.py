@@ -1,11 +1,12 @@
-import customtkinter
+import customtkinter, time
 import Controllers.Mongo as Mongo
+import Controllers.System as System
 
 class SidebarFrame(customtkinter.CTkFrame):
   def __init__(self,*args,**kwargs):
     super().__init__(*args,**kwargs)
         # create sidebar frame with widgets
-      
+
     self.logo_label = customtkinter.CTkLabel(
       self,
       text="PPIM",
@@ -22,24 +23,24 @@ class SidebarFrame(customtkinter.CTkFrame):
     
     #management buttons
 
-    self.startMongoDBButton = customtkinter.CTkButton(
+    self.startMongo = customtkinter.CTkButton(
       self,
       text='Start MongoDB',
-      command=Mongo.startDB
+      command=self.startMongoDB
       )
-    self.startMongoDBButton.grid(
+    self.startMongo.grid(
       row=2,
       column=0,
       padx=20,
       pady=10
       )
 
-    self.stopMongoDBButton = customtkinter.CTkButton(
+    self.stopMongo = customtkinter.CTkButton(
       self,
       text='Stop MongoDB',
-      command=Mongo.stopDB
+      command=self.stopMongoDB
       )
-    self.stopMongoDBButton.grid(
+    self.stopMongo.grid(
       row=3,
       column=0,
       padx=20,
@@ -49,6 +50,7 @@ class SidebarFrame(customtkinter.CTkFrame):
     self.MongoStatus = customtkinter.CTkLabel(
       self,
       text='MongoDB: Off',
+      text_color='black',
       bg_color='grey',
       corner_radius=10,
     )
@@ -168,7 +170,7 @@ class SidebarFrame(customtkinter.CTkFrame):
 
     # set default values
     #self.progressbar_1.configure(mode="indeterminnate")
-    self.stopMongoDBButton.configure(state='disabled')
+    #
     #self.progressbar_1.start()
   
   def change_appearance_mode_event(self, new_appearance_mode: str):
@@ -179,10 +181,32 @@ class SidebarFrame(customtkinter.CTkFrame):
     customtkinter.set_widget_scaling(new_scaling_float)
   
   def startMongoDB(self):
-    print("startMongoDB")
+    Mongo.startDB()
+    self.monitorMongoDB()
   
   def stopMongoDB(self):
-    print("stopMongoDB")
+    Mongo.stopDB()
+    self.monitorMongoDB()
+
+  def monitorMongoDB(self):
+    status = System.mongoStatus()
+    if status == 'stopped':
+      self.startMongo.configure(state='normal')
+      self.MongoStatus.configure(
+        text='MongoDB: Off',
+        text_color='black',
+        bg_color='grey',
+      )
+      self.stopMongo.configure(state='disabled')
+
+    elif status == 'running':
+      self.startMongo.configure(state='disabled')
+      self.MongoStatus.configure(
+        text='MongoDB: On',
+        text_color='black',
+        bg_color='green'
+      )
+      self.stopMongo.configure(state='normal')
 
   def updateNode(self):
     print("updateNode")
