@@ -8,8 +8,7 @@ def setup():
     versions = downloadAll()
     paths = extractAll()
     setPATH()
-    cfg = {'Versions':versions,'PATHS':paths}
-    print(cfg)
+    cfg = {"versions":versions,"PATHS":paths}
     try:
         cfgFile = open('Install/setup.ppimcfg','w')
         cfgFile.write(str(cfg))

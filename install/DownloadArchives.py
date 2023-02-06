@@ -65,68 +65,68 @@ def architectureCheck(nodeVer, bit):
     return nodeVer
 
 def parseMongoURL(program:str, url):
-    osVer = osVersion()
-    if program.lower() == 'mongodb':
-        ver = latestMongoDB(url)
-        version = ver['version']
-        ver = MongoDBSelectEdition(ver,'base')
-        ver = MongoDBOSSelect(ver,osVer['system'])
-        url = ver['archive']['url']
-        filename = url.split('/')[-1]
-        return {'url': url, 'filename':filename, 'version':version}
-    elif program.lower() in ('compass','mongosh'):
-        ver = latestCompassAndShell(url)
-        version = ver['version']
-        ver = CompassAndShellOSSelect(ver['file'],osVer['system'])
-        url = ver[0]['download_link']
-        filename = url.split('/')[-1]
-        if program.lower() != 'mongosh':
-            filename = filename.split('-')[1:]
-            filename = '-'.join(filename)
-        return {'url': url, 'filename':filename, 'version':version}
+  osVer = osVersion()
+  if program.lower() == 'mongodb':
+      ver = latestMongoDB(url)
+      version = ver['version']
+      ver = MongoDBSelectEdition(ver,'base')
+      ver = MongoDBOSSelect(ver,osVer['system'])
+      url = ver['archive']['url']
+      filename = url.split('/')[-1]
+      return {'url': url, 'filename':filename, 'version':version}
+  elif program.lower() in ('compass','mongosh'):
+      ver = latestCompassAndShell(url)
+      version = ver['version']
+      ver = CompassAndShellOSSelect(ver['file'],osVer['system'])
+      url = ver[0]['download_link']
+      filename = url.split('/')[-1]
+      if program.lower() != 'mongosh':
+          filename = filename.split('-')[1:]
+          filename = '-'.join(filename)
+      return {"url": url, "filename":filename, "version":version}
 
 def parseNodeJSURL(url):
-    osVer = osVersion()
-    ver = latestNodeJS(url)
-    version = ver['version']
-    ver = architectureCheck(ver,osVer['arch'])
-    ver = NodeOSSelect(ver,osVer['system'])
-    url = "https://nodejs.org/dist/" + ver['version'] + '/node-' + ver['version'] + '-' + ver['files'][0]
-    return {'url':url,'filename':'node-' + ver['version'] + '-' + ver['files'][0],'version':version}
+  osVer = osVersion()
+  ver = latestNodeJS(url)
+  version = ver['version']
+  ver = architectureCheck(ver,osVer['arch'])
+  ver = NodeOSSelect(ver,osVer['system'])
+  url = "https://nodejs.org/dist/" + ver['version'] + '/node-' + ver['version'] + '-' + ver['files'][0]
+  return {"url":url,"filename":'node-' + ver['version'] + '-' + ver['files'][0],"version":version}
 
 def downloadVSCode(path):
-    vscode_url = "https://update.code.visualstudio.com/latest/win32-x64-archive/stable"
-    vscodeVer = urlopen(vscode_url)
-    contentdisposition = vscodeVer.info()['Content-Disposition']
-    filename = contentdisposition.split('"')[1].split('-')[0]+'.zip'
-    version = contentdisposition.split('"')[1].split('-')[-1][:-4]
-    if not os.path.exists(path+filename):
-        urlretrieve(vscode_url, path+filename)
-    else:
-        print('LTS VS Code already downloaded')
-    return version
+  vscode_url = "https://update.code.visualstudio.com/latest/win32-x64-archive/stable"
+  vscodeVer = urlopen(vscode_url)
+  contentdisposition = vscodeVer.info()['Content-Disposition']
+  filename = contentdisposition.split('"')[1].split('-')[0]+'.zip'
+  version = contentdisposition.split('"')[1].split('-')[-1][:-4]
+  if not os.path.exists(path+filename):
+    urlretrieve(vscode_url, path+filename)
+  else:
+    print('LTS VS Code already downloaded')
+  return version
 
 #Downloads the archives
 def downloadAll():
-    path = pathlib.Path
-    cwd = str(pathlib.Path.cwd())
-    downloadInfo = {
-        'MongoDB':parseMongoURL("mongodb","http://downloads.mongodb.org.s3.amazonaws.com/current.json"),
-        'Compass':parseMongoURL("compass","https://info-mongodb-com.s3.amazonaws.com/com-download-center/compass.json"),
-        'Mongosh':parseMongoURL("mongosh","https://s3.amazonaws.com/info-mongodb-com/com-download-center/mongosh.json"),
-        'Node':parseNodeJSURL("https://nodejs.org/download/release/index.json"),
-        }
-    versions = {}
-    for dependency, download in downloadInfo.items():
-        versions[dependency] = download['version']
-        if not path(cwd+'/lib/'+dependency).exists():
-            if not path(cwd+'/tmp/'+dependency.lower()+'.zip').exists():
-                if not path(cwd+'/tmp').exists():path(cwd+'/tmp').mkdir()
-                urlretrieve(download['url'],cwd+'\\tmp\\'+dependency.lower()+'.zip')
-                print(dependency + ' downloaded!')
-            else:
-                print('Latest already downloaded!')
-    if not path(cwd+'/lib/VSCode').exists():
-        versions['vscode'] = downloadVSCode(cwd+'\\tmp\\')
-        print('VS Code downloaded!')
-    return versions
+  path = pathlib.Path
+  cwd = str(pathlib.Path.cwd())
+  downloadInfo = {
+    "MongoDB":parseMongoURL("mongodb","http://downloads.mongodb.org.s3.amazonaws.com/current.json"),
+    "Compass":parseMongoURL("compass","https://info-mongodb-com.s3.amazonaws.com/com-download-center/compass.json"),
+    "Mongosh":parseMongoURL("mongosh","https://s3.amazonaws.com/info-mongodb-com/com-download-center/mongosh.json"),
+    "Node":parseNodeJSURL("https://nodejs.org/download/release/index.json"),
+    }
+  versions = {}
+  for dependency, download in downloadInfo.items():
+    versions[dependency] = download['version']
+    if not path(cwd+'/lib/'+dependency).exists():
+      if not path(cwd+'/tmp/'+dependency.lower()+'.zip').exists():
+        if not path(cwd+'/tmp').exists():path(cwd+'/tmp').mkdir()
+        urlretrieve(download['url'],cwd+'\\tmp\\'+dependency.lower()+'.zip')
+        print(dependency + ' downloaded!')
+      else:
+        print('Latest already downloaded!')
+  if not path(cwd+'/lib/VSCode').exists():
+    versions['vscode'] = downloadVSCode(cwd+'\\tmp\\')
+    print('VS Code downloaded!')
+  return versions

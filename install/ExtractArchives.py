@@ -6,7 +6,7 @@ def ExtractArchives(lib,filename:pathlib.Path,extraFolder=False):
   with zipfile.ZipFile(str(filename), 'r') as zObject:
     if path(lib+filename.name[:-4]).exists():
       print('Files already extracted!')
-      return {str(filename.name[:-4]):str(path(lib+filename.name[:-4]))}
+      return {"{c}".format(c=str(filename.name[:-4])):str(path(lib+filename.name[:-4]))}
     else:
       if extraFolder == False:
         zObject.extractall(str(path(lib)))
@@ -14,11 +14,11 @@ def ExtractArchives(lib,filename:pathlib.Path,extraFolder=False):
         l = list(filter(lambda x: filename.name[:-4] in str(x), l))[0]
         l.rename(lib+filename.name[:-4])
         print(filename.name[:-4] + 'Extracted!')
-        return {str(filename.name[:-4]):str(path(lib+filename.name[:-4]))}
+        return {"{c}".format(c=str(filename.name[:-4])):str(path(lib+filename.name[:-4]))}
       else:
         zObject.extractall(str(path(lib+filename.name[:-4])))
         print(filename.name[:-4] + 'Extracted!')
-        return {str(filename.name[:-4]):str(path(lib+filename.name[:-4]))}
+        return {"{c}".format(c=str(filename.name[:-4])):str(path(lib+filename.name[:-4]))}
 
 def extractAll():
   path = pathlib.Path

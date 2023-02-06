@@ -1,7 +1,6 @@
+import os, sys
+from Install.PPIMDBInit import PPIMdbSetup
 import customtkinter as ctk
-import sys
-import os
-
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -33,8 +32,8 @@ class App(ctk.CTk):
       pady=10,
       sticky='nsew'
       )
-  
-    self.after(1000, self.restart)
+    
+    
 
   def restart(self):
     python = sys.executable

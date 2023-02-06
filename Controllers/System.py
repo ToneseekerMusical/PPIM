@@ -1,4 +1,4 @@
-import sys, os, traceback, psutil
+import sys, os, traceback, psutil, ctypes
 
 
 def mongoStatus():
@@ -41,8 +41,8 @@ def runAsAdmin(cmdLine=None, wait=True):
   # XXX TODO: isn't there a function or something we can call to massage command line params?
   params = " ".join(['"%s"' % (x,) for x in cmdLine[1:]])
   cmdDir = ''
-  #showCmd = win32con.SW_SHOWNORMAL
-  showCmd = win32con.SW_HIDE
+  showCmd = win32con.SW_SHOWNORMAL
+  #showCmd = win32con.SW_HIDE
   lpVerb = 'runas'  # causes UAC elevation prompt.
 
   # print "Running", cmd, params
@@ -80,3 +80,18 @@ def test():
     rc = 0
   x = raw_input('Press Enter to exit.')
   return rc
+
+def get_service(name):
+  service = None
+  try:
+    service = psutil.win_service_get(name)
+    service = service.as_dict()
+  except:
+    pass
+  return service
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
