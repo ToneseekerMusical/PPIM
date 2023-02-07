@@ -7,13 +7,11 @@ import GUI.Views.Settings as Settings
 class updateFrame(ctk.CTkFrame):
   def __init__(self, *args, **kwargs):
     super().__init__(
-      #bg_color='transparent',
-      #fg_color='transparent',
+      bg_color='transparent',
+      fg_color='transparent',
       *args,
       **kwargs
       )
-
-    self.grid_columnconfigure(0,weight=1)
 
     self.updateMongo=newWin.btn(
       master = self,
@@ -89,7 +87,7 @@ class updateFrame(ctk.CTkFrame):
     
     self.updateAll=newWin.btn(
       master = self,
-      text = 'Update updateAll',
+      text = 'Update All',
       frame = updatewin.progressFrame
     )
     self.updateAll.grid(

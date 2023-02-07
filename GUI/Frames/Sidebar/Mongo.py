@@ -11,9 +11,6 @@ class MongoFrame(ctk.CTkFrame):
       **kwargs
       )
     
-    self.grid_rowconfigure((0,1,2,3,4), weight=0)
-    self.grid_rowconfigure(5, weight=1)
-    
     self.logo_label = ctk.CTkLabel(
       self,
       text="PPIM",
@@ -25,9 +22,9 @@ class MongoFrame(ctk.CTkFrame):
     self.logo_label.grid(
       row=0,
       column=0,
-      padx=20,
-      pady=(20, 10),
-      sticky='nsew'
+      padx=10,
+      pady=(10, 5),
+      sticky='new'
       )
     
     #management buttons
@@ -40,8 +37,9 @@ class MongoFrame(ctk.CTkFrame):
     self.startMongo.grid(
       row=1,
       column=0,
-      padx=20,
-      pady=10
+      padx=10,
+      pady=5,
+      sticky='ew'
       )
 
     self.stopMongo = ctk.CTkButton(
@@ -52,34 +50,37 @@ class MongoFrame(ctk.CTkFrame):
     self.stopMongo.grid(
       row=2,
       column=0,
-      padx=20,
-      pady=10
+      padx=10,
+      pady=5,
+      sticky='ew'
       )
 
-    self.MongoStatus = ctk.CTkLabel(
+    self.MongoStatus = ctk.CTkButton(
       self,
       text='MongoDB: Off',
-      text_color='black',
-      bg_color='grey',
-      corner_radius=10,
+      text_color_disabled='black',
+      fg_color='grey',
     )
     self.MongoStatus.grid(
       row=3,
       column=0,
-      padx=20,
-      pady=10,
+      padx=10,
+      pady=5,
+      sticky='ew'
     )
+    self.MongoStatus.configure(state='disabled')
 
     self.openMongosh = ctk.CTkButton(
       self,
       text='Open MongoSH',
-      command=self.openMongoSH
+      command=Mongo.startMongosh
       )
     self.openMongosh.grid(
       row=4,
       column=0,
-      padx=20,
-      pady=10
+      padx=10,
+      pady=5,
+      sticky='ew'
       )
 
     self.monitorMongoDB()
@@ -98,8 +99,8 @@ class MongoFrame(ctk.CTkFrame):
       self.startMongo.configure(state='normal')
       self.MongoStatus.configure(
         text='MongoDB: Off',
-        text_color='black',
-        bg_color='grey',
+        text_color_disabled='black',
+        fg_color='grey',
       )
       self.stopMongo.configure(state='disabled')
 
@@ -107,10 +108,7 @@ class MongoFrame(ctk.CTkFrame):
       self.startMongo.configure(state='disabled')
       self.MongoStatus.configure(
         text='MongoDB: On',
-        text_color='black',
-        bg_color='green'
+        text_color_disabled='black',
+        fg_color='green'
       )
       self.stopMongo.configure(state='normal')
-
-  def openMongoSH(self):
-    print('Open Mongosh!')

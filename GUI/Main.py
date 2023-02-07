@@ -20,16 +20,11 @@ class App(customtkinter.CTk):
     self.grid_rowconfigure(0, weight=1)
 
     #Create Side Bar
-    self.sidebar = sidebar.SidebarFrame(self,width=140,corner_radius=0)
+    self.sidebar = sidebar.SidebarFrame(self,corner_radius=0)
     self.sidebar.grid(
       row=0,
       column=0,
-      rowspan=5,
-      sticky="nsew"
-      )
-    self.sidebar.grid_rowconfigure(
-      5,
-      weight=1
+      sticky="ns"
       )
     self.tabs = tabs.tabView(self)
     self.tabs.grid(

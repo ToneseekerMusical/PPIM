@@ -1,8 +1,7 @@
-import pathlib, ctypes
 import Controllers.System as System
+import subprocess
 from subprocess import Popen
 from pymongo import MongoClient
-from pymongo import database
 
 def startDB():
   if System.get_service('MongoDB')['status'] == 'stopped':
@@ -15,7 +14,10 @@ def stopDB():
 
 #Starts Compass
 def startCompass():
-   Popen('mongodbcompass.exe')
+  Popen('mongodbcompass.exe')
+
+def startMongosh():
+  Popen(['powershell.exe','mongosh'],creationflags=subprocess.CREATE_NEW_CONSOLE)
 
 def dbConnect(constr:str, dbname:str):
 

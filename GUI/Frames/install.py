@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import GUI.Buttons.exit as Exit
 import GUI.Frames.progress as Progress
-import Install.PPIMSetup as Setup
+import Controllers.Setup as Setup
 import os, sys
 
 class InstallFrame(ctk.CTkFrame):

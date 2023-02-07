@@ -1,6 +1,6 @@
 import customtkinter as ctk
-import Install.GUI.Frames.install as Install
-import Install.GUI.Frames.paypal as Paypal
+import GUI.Frames.install as Install
+import GUI.Frames.paypal as Paypal
 
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
