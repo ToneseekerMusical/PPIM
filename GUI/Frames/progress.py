@@ -1,7 +1,11 @@
 import customtkinter as ctk
 
 class progressFrame(ctk.CTkFrame):
-  def __init__(self, *args, **kwargs):
+  def __init__(
+    self,
+    *args,
+    **kwargs
+    ):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',

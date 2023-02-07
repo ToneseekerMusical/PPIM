@@ -55,31 +55,6 @@ class mongoDBFrame(customtkinter.CTkFrame):
       sticky='w'
       )
 
-    self.createDBName = customtkinter.CTkEntry(
-      self,
-      placeholder_text='Database Name'
-      )
-    self.createDBName.grid(
-      row=3,
-      column=0,
-      padx=5,
-      pady=5,
-      sticky='ew'
-      )
-
-    self.createDatabaseButton = customtkinter.CTkButton(
-      self,
-      text='Create Database',
-      command=self.createDatabase
-      )
-    self.createDatabaseButton.grid(
-      row=3,
-      column=1,
-      padx=20,
-      pady=5,
-      sticky='e'
-      )
-
     self.launchCompassButton = customtkinter.CTkButton(
       self,
       text='Open MongoDB Compass',
@@ -93,6 +68,3 @@ class mongoDBFrame(customtkinter.CTkFrame):
       pady=5,
       sticky='ew'
       )
-
-  def createDatabase(self):
-    print('createDatabase')

@@ -1,8 +1,7 @@
 import customtkinter as ctk
-import pathlib, ctypes, sys
+import pathlib, ctypes
 import Controllers.Mongo as Mongo
 import pymongo.database as database
-import pymongo.collection as collection
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -40,9 +39,8 @@ if __name__ == "__main__":
     "PPIM"
     )
   sysInf = database.Database.get_collection(db,'System').find_one()
-  print(sysInf)
   if sysInf != None:
-    import GUI.Views.Main as Main
+    import GUI.Main as Main
     app = Main.App()
   elif path(cwd+'\\Install').exists():
     if not path(cwd+'\\Install\\setup.ppimcfg').exists():
@@ -53,4 +51,4 @@ if __name__ == "__main__":
       app = config.App()
 
   app.eval('tk::PlaceWindow . center')
-  ctypes.windll.shell32.ShellExecuteW(None, "runas", app.mainloop(), " ".join(sys.argv), None, 1)
+  app.mainloop()

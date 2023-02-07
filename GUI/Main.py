@@ -11,7 +11,7 @@ class App(customtkinter.CTk):
 
     # configure window
     self.title("Python PayloadCMS Instance Manager")
-    self.geometry(f"{1500}x{680}")
+    self.geometry(f"{1200}x{680}")
     customtkinter.set_appearance_mode('dark')
 
     # configure grid layout (4x4)
