@@ -1,6 +1,6 @@
 import os, sys
-from Install.PPIMDBInit import PPIMdbSetup
 import customtkinter as ctk
+from Controllers.Setup import Setup
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -9,6 +9,7 @@ ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark
 class App(ctk.CTk):
   def __init__(self):
     super().__init__()
+    print('config')
     self.wm_title("AppWindow Test")
     self.attributes('-topmost',1)
     self.overrideredirect(True)
@@ -32,10 +33,11 @@ class App(ctk.CTk):
       pady=10,
       sticky='nsew'
       )
-    PPIMdbSetup()
+    
+    setup = Setup('config',mongoVer='base')
+    setup.StartSetup()
+
     self.restart()
-    
-    
 
   def restart(self):
     python = sys.executable
