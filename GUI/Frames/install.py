@@ -40,7 +40,6 @@ class InstallFrame(ctk.CTkFrame):
     )
 
   def startInstall(self):
-    from Controllers.Setup import Setup
     self.installbtn.configure(state='disabled')
     self.progress = Progress.progressFrame(
       self,
@@ -52,7 +51,12 @@ class InstallFrame(ctk.CTkFrame):
       sticky='ew'
     )
     self.progress.progress.start()
-    setup = Setup('install')
-    setup.StartSetup()
+    from Controllers.Setup import Setup
+    self.setup = Setup('install',mongoVer='base')
+    self.setup.Install()
+    self.restart()
+
+  
+  def restart(self):
     python = sys.executable
     os.execl(python, python, * sys.argv)

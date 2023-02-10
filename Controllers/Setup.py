@@ -7,7 +7,7 @@ from Controllers.System import runAsAdmin
 
 class Setup():
   def __init__(self, phase:str, installPath="", mongoVer='base'):
-    self.__ver = '0.0.01dev'
+    if phase.lower() not in ('install', 'config', 'add', 'check', 'update'): raise Exception('You must specify whether this is an installation or update.')
     self.__mongoVer = mongoVer
     self.__phase = phase
     if installPath != "":
@@ -15,61 +15,61 @@ class Setup():
     else:
       self.__instPath = Path.cwd()
 
-  def StartSetup(self):
-    self.__downloadDeps = Dependencies(self.__mongoVer,self.__phase,self.__instPath)
-    self.__dependencies = self.__downloadDeps.allDependencies
-    self.__mongoV = list(self.__dependencies['MongoDB'].keys())[0]
+  def Install(self):
+    downloadDeps = Dependencies(self.__mongoVer,self.__phase,self.__instPath)
+    mongoV = list(downloadDeps.allDependencies['MongoDB'].keys())[0]
+    cfgPath = Path(f'{self.__instPath}\lib\MongoDB\{mongoV}\\bin\mongod.conf')
 
-    self.__srv = Path(f'{self.__instPath}\srv\mongodb')
-    self.__mdbCfgTemplate = Path(f'{self.__instPath}\mongod.conf.template')
-    self.__mdbCfgPath = Path(f'{self.__instPath}\lib\MongoDB\{self.__mongoV}\\bin\mongod.conf')
+    srv = Path(f'{self.__instPath}\srv\mongodb')
+    cfgTemplate = Path(f'{self.__instPath}\mongod.conf.template')
 
-    if not self.__srv.is_dir(): self.__srv.mkdir(parents=True)
-    confc = open(self.__mdbCfgTemplate,'r').read()
-    confc = confc.replace('<logpath>',f'{self.__srv}\mongo.log')
-    confc = confc.replace('<PIDPath>',f'{self.__srv}\mongo.pid')
-    confc = confc.replace('<TzDBPath>',f'{self.__srv}')
-    confc = confc.replace('<storagepath>',f'{self.__srv}')
+    if not srv.is_dir(): srv.mkdir(parents=True)
+    confc = open(cfgTemplate,'r').read()
+    confc = confc.replace('<logpath>',f'{srv}\mongo.log')
+    confc = confc.replace('<PIDPath>',f'{srv}\mongo.pid')
+    confc = confc.replace('<TzDBPath>',f'{srv}')
+    confc = confc.replace('<storagepath>',f'{srv}')
 
-    Path(self.__mdbCfgPath).touch()
-    conff = open(self.__mdbCfgPath,'w')
+    Path(cfgPath).touch()
+    conff = open(cfgPath,'w')
     conff.write(confc)
     conff.close()
 
-    Path(f'{self.__srv}\mongod.pid').touch()
-    Path(f'{self.__srv}\mongod.log').touch()
-    if self.__phase == 'config':
-      if not System.get_service('MongoDB'):
-        print('trying to create system service')
-        print(self.__mdbCfgPath)
-        #runAsAdmin(['mongod', '--config', self.__mdbCfgPath, '--install' '--serviceName' 'MongoDB'])
-        ctypes.windll.shell32.ShellExecuteW(
-          None,
-          "runas",
-          "powershell.exe",
-          f"""
-          mongod --config {self.__mdbCfgPath} --install --serviceName MongoDB;
-          net start MongoDB
-          """,
-          None,
-          0
-        )
-      db = MongoDB()
-      db.StartService()
-      db.Connect(
-      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM"
+    Path(f'{srv}\mongod.pid').touch()
+    Path(f'{srv}\mongod.log').touch()
+
+    if not System.get_service('MongoDB'):
+      ctypes.windll.shell32.ShellExecuteW(
+        None,
+        "runas",
+        "powershell.exe",
+        f"""
+        mongod --config {cfgPath} --install --serviceName MongoDB;
+        net start MongoDB
+        """,
+        None,
+        0
       )
-      db = db.Connect(dbName='PPIM')
-      self.__sys = {
-        'Version': self.__ver,
-        'Dependencies': self.__dependencies
-      }
-      try:
-        self.__system = db.create_collection('System',check_exists=True,capped=True,max=1,size=52428800)
-        self.__settings = db.create_collection('Settings',check_exists=True,capped=True,max=1,size=52428800)
-      except:
-        self.__system = db.get_collection('System')
-      try:
-        self.__system.insert_one(self.__sys)
-      except:
-        pass
+    
+  def Config(self):
+    dependencies = Dependencies(self.__mongoVer,'config',self.__instPath)
+    dependencies = dependencies.allDependencies
+
+    ver = '0.0.01dev'
+
+    db = MongoDB()
+    db.StartService()
+    db.Connect(
+    "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM"
+    )
+    db = db.Connect(dbName='PPIM')
+    sys = {
+      'Version': ver,
+      'Dependencies': dependencies
+    }
+    try:
+      self.__system = db.create_collection('System',check_exists=True,capped=True,max=1,size=52428800)
+      self.__settings = db.create_collection('Settings',check_exists=True,capped=True,max=1,size=52428800)
+    except:
+      self.__system = db.get_collection('System')
+      self.__system.insert_one(sys)

@@ -21,14 +21,19 @@ if __name__ == "__main__":
         "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
         )
       ppim = db.Connect(dbName='PPIM')
+      try:
+        systemInfo = ppim.get_collection('System').find_one()
+      except:
+        systemInfo = None
     except:
       print('Database not available!')
       ppim = None
+      systemInfo = None
 
-    if ppim != None:
+    if systemInfo != None:
       import GUI.Main as Main
       app = Main.App(db,ppim)
-    elif Path(f'{Path().cwd()}\lib\\').exists():
+    elif ppim != None:
       import GUI.Config as Config
       app = Config.App()
     else:

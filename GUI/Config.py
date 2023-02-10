@@ -35,11 +35,10 @@ class App(ctk.CTk):
       )
     
     setup = Setup('config',mongoVer='base')
-    setup.StartSetup()
+    setup.Config()
 
     self.restart()
 
   def restart(self):
     python = sys.executable
     os.execl(python, python, * sys.argv)
-    #write version info to database and config file

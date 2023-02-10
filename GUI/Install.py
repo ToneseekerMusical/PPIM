@@ -13,6 +13,7 @@ class App(ctk.CTk):
     self.wm_title("AppWindow Test")
     self.attributes('-topmost',1)
     self.overrideredirect(True)
+    
     # configure window
     self.title("Install")
 
