@@ -73,7 +73,7 @@ class MongoFrame(ctk.CTkFrame):
     self.openMongosh = ctk.CTkButton(
       self,
       text='Open MongoSH',
-      command=Mongo.startMongosh
+      command=Mongo.MongoSH.startMongosh
       )
     self.openMongosh.grid(
       row=4,
@@ -86,12 +86,12 @@ class MongoFrame(ctk.CTkFrame):
     self.monitorMongoDB()
 
   def startMongoDB(self):
-    Mongo.startDB()
-    self.monitorMongoDB()
+    Mongo.MongoDB.StartService
+    self.monitorMongoDB
   
   def stopMongoDB(self):
-    Mongo.stopDB()
-    self.monitorMongoDB()
+    Mongo.MongoDB.StopService
+    self.monitorMongoDB
 
   def monitorMongoDB(self):
     status = System.mongoStatus()

@@ -21,15 +21,17 @@ class Setup():
     self.__mongoV = list(self.__dependencies['MongoDB'].keys())[0]
 
     self.__srv = Path(f'{self.__instPath}\srv\mongodb')
-    self.__mdbCfgTemplate = Path(f'{self.__instPath}\mongodb.conf.template')
-    self.__mdbCfgPath = Path(f'{self.__instPath}\lib\mongodb\{self.__mongoV}\\bin\mongodb.conf')
+    self.__mdbCfgTemplate = Path(f'{self.__instPath}\mongod.conf.template')
+    self.__mdbCfgPath = Path(f'{self.__instPath}\lib\MongoDB\{self.__mongoV}\\bin\mongod.conf')
 
     if not self.__srv.is_dir(): self.__srv.mkdir(parents=True)
     confc = open(self.__mdbCfgTemplate,'r').read()
-    confc = confc.replace('<logPath>',f'{self.__srv}\mongo.log')
+    confc = confc.replace('<logpath>',f'{self.__srv}\mongo.log')
     confc = confc.replace('<PIDPath>',f'{self.__srv}\mongo.pid')
     confc = confc.replace('<TzDBPath>',f'{self.__srv}')
-    confc = confc.replace('<storagePath>',f'{self.__srv}')
+    confc = confc.replace('<storagepath>',f'{self.__srv}')
+
+    Path(self.__mdbCfgPath).touch()
     conff = open(self.__mdbCfgPath,'w')
     conff.write(confc)
     conff.close()
@@ -46,18 +48,18 @@ class Setup():
           "runas",
           "powershell.exe",
           f"""
-          f'mongod.exe --config {self.__mdbCfgPath} --install --serviceName MongoDB'
+          mongod --config {self.__mdbCfgPath} --install --serviceName MongoDB;
+          net start MongoDB
           """,
           None,
           0
         )
       db = MongoDB()
       db.StartService()
-      print(db.server)
-      db = db.Connect(
-      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
-      "PPIM"
+      db.Connect(
+      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM"
       )
+      db = db.Connect(dbName='PPIM')
       self.__sys = {
         'Version': self.__ver,
         'Dependencies': self.__dependencies

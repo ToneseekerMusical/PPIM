@@ -15,20 +15,20 @@ def is_admin():
 if __name__ == "__main__":
 
     try:
-      MongoDB.StartService()
-      __db = MongoDB.Connect(
+      db = MongoDB()
+      db.StartService()
+      db.Connect(
         "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
-        "PPIM"
         )
-      __sysInfo = __db.get_collection('System').find_one()
+      ppim = db.Connect(dbName='PPIM')
     except:
       print('Database not available!')
-      __sysInfo = None
+      ppim = None
 
-    if __sysInfo != None:
+    if ppim != None:
       import GUI.Main as Main
-      app = Main.App()
-    if Path(f'{Path().cwd()}\lib\\').exists():
+      app = Main.App(db,ppim)
+    elif Path(f'{Path().cwd()}\lib\\').exists():
       import GUI.Config as Config
       app = Config.App()
     else:
@@ -36,6 +36,5 @@ if __name__ == "__main__":
       app = Install.App()
 
     app.eval('tk::PlaceWindow . center')
-    app.mainloop()
 
     ctypes.windll.shell32.ShellExecuteW(None, "runas", app.mainloop(), " ".join(sys.argv), None, 1)

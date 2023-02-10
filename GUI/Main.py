@@ -1,12 +1,14 @@
 import customtkinter
 from GUI.Frames import sidebar
 import GUI.Tabs.Main.tabView as tabs
+from Controllers.Mongo import MongoDB
+from pymongo.database import Database
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
 class App(customtkinter.CTk):
-  def __init__(self):
+  def __init__(self, db:MongoDB, PPIM:Database):
     super().__init__()
 
     # configure window
