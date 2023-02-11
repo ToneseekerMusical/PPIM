@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import GUI.Buttons.exit as Exit
 import GUI.Frames.progress as Progress
-import os, sys
+import os, sys, threading
 
 class InstallFrame(ctk.CTkFrame):
   def __init__(
@@ -31,7 +31,7 @@ class InstallFrame(ctk.CTkFrame):
     self.installbtn = ctk.CTkButton(
        self,
        text='Install',
-       command=self.startInstall
+       command=threading.Thread(target=self.StartInstall).start
     )
     self.installbtn.grid(
       row=1,
@@ -39,7 +39,7 @@ class InstallFrame(ctk.CTkFrame):
       sticky='e'
     )
 
-  def startInstall(self):
+  def StartInstall(self):
     self.installbtn.configure(state='disabled')
     self.progress = Progress.progressFrame(
       self,
@@ -54,8 +54,8 @@ class InstallFrame(ctk.CTkFrame):
     from Controllers.Setup import Setup
     self.setup = Setup('install',mongoVer='base')
     self.setup.Install()
+    
     self.restart()
-
   
   def restart(self):
     python = sys.executable

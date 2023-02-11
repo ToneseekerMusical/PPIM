@@ -1,9 +1,10 @@
 import customtkinter as ctk
-import Controllers.Mongo as Mongo
-import Controllers.System as System
+from Controllers.Mongo import MongoDB as MongoDB
+from Controllers.Mongo import MongoCompass as Compass
+from Controllers.Mongo import MongoSH as MongoSH
 
 class MongoFrame(ctk.CTkFrame):
-  def __init__(self, *args, **kwargs):
+  def __init__(self, db:MongoDB, *args, **kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
@@ -11,6 +12,8 @@ class MongoFrame(ctk.CTkFrame):
       **kwargs
       )
     
+    self.db = db
+
     self.logo_label = ctk.CTkLabel(
       self,
       text="PPIM",
@@ -73,10 +76,23 @@ class MongoFrame(ctk.CTkFrame):
     self.openMongosh = ctk.CTkButton(
       self,
       text='Open MongoSH',
-      command=Mongo.MongoSH.startMongosh
+      command=MongoSH.startMongosh
       )
     self.openMongosh.grid(
       row=4,
+      column=0,
+      padx=10,
+      pady=5,
+      sticky='ew'
+      )
+    
+    self.launchCompassButton = ctk.CTkButton(
+      self,
+      text='Open Compass',
+      command=Compass.startCompass
+      )
+    self.launchCompassButton.grid(
+      row=5,
       column=0,
       padx=10,
       pady=5,
@@ -86,15 +102,15 @@ class MongoFrame(ctk.CTkFrame):
     self.monitorMongoDB()
 
   def startMongoDB(self):
-    Mongo.MongoDB.StartService
-    self.monitorMongoDB
+    self.db.StartService()
+    self.monitorMongoDB()
   
   def stopMongoDB(self):
-    Mongo.MongoDB.StopService
-    self.monitorMongoDB
+    self.db.StopService()
+    self.monitorMongoDB()
 
   def monitorMongoDB(self):
-    status = System.mongoStatus()
+    status = self.db.mongoStatus()
     if status == 'stopped':
       self.startMongo.configure(state='normal')
       self.MongoStatus.configure(

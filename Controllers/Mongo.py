@@ -1,7 +1,6 @@
 import Controllers.System as System
-import subprocess
+import subprocess, pymongo, psutil
 from subprocess import Popen, run
-import pymongo
 import pymongo.database as database
 
 class MongoDB():
@@ -9,6 +8,9 @@ class MongoDB():
     super().__init__(*args,**kwargs)
     self.adminDB = ('PPIM', 'admin', 'config', 'local')
 
+  def mongoStatus(self):
+    status = psutil.win_service_get('mongoDB').status()
+    return status
   #If service is stopped, start it
   def StartService(self):
     if System.get_service('MongoDB')['status'] == 'stopped':
@@ -38,14 +40,12 @@ class MongoDB():
       raise Exception('You must first initialize the database with a connection string!')
     if not hasattr(self,'server') and conStr != '' and dbName == '':
       self.server = self.__TestConnect(conStr)
-      print('Server Set')
-    if self.server != None and dbName != '':
+    if self.server != None:
       if dbName != '':
         if self.server == None: raise Exception('Error connecting to the server!')
         return self.server[dbName]
       elif dbName == '':
         self.dbList = [x for x in self.server.list_database_names() if x not in self.adminDB]
-        return self.dbList
 
   #Checks if database already exists, if not, checks if new name is valid.
   #Checks name, if valid, creates the databas with site info collection

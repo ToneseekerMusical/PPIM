@@ -15,12 +15,12 @@ def is_admin():
 if __name__ == "__main__":
 
     try:
-      db = MongoDB()
-      db.StartService()
-      db.Connect(
+      client = MongoDB()
+      client.StartService()
+      client.Connect(
         "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
         )
-      ppim = db.Connect(dbName='PPIM')
+      ppim = client.Connect(dbName='PPIM')
       try:
         systemInfo = ppim.get_collection('System').find_one()
       except:
@@ -30,10 +30,10 @@ if __name__ == "__main__":
       ppim = None
       systemInfo = None
 
-    if systemInfo != None:
+    if ppim != None and systemInfo != None:
       import GUI.Main as Main
-      app = Main.App(db,ppim)
-    elif ppim != None:
+      app = Main.App(client,ppim)
+    elif ppim != None and systemInfo == None:
       import GUI.Config as Config
       app = Config.App()
     else:

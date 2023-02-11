@@ -1,10 +1,5 @@
 import sys, os, traceback, psutil, ctypes
 
-
-def mongoStatus():
-    status = psutil.win_service_get('mongoDB').status()
-    return status
-
 def isUserAdmin():
 
   if os.name == 'nt':

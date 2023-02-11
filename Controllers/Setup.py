@@ -69,7 +69,7 @@ class Setup():
     }
     try:
       self.__system = db.create_collection('System',check_exists=True,capped=True,max=1,size=52428800)
-      self.__settings = db.create_collection('Settings',check_exists=True,capped=True,max=1,size=52428800)
+      db.create_collection('Settings',check_exists=True,capped=True,max=1,size=52428800)
     except:
       self.__system = db.get_collection('System')
       self.__system.insert_one(sys)

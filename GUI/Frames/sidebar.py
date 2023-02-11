@@ -1,9 +1,10 @@
 import customtkinter as ctk
-import GUI.Frames.Sidebar.Update as Updates
-import GUI.Frames.Sidebar.Mongo as Mongo
+from GUI.Frames.Sidebar.Options import OptionsFrame
+from GUI.Frames.Sidebar.Mongo import MongoFrame
+from GUI.Frames.Sidebar.SiteControl import SiteControl
 
 class SidebarFrame(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,client,*args,**kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
@@ -15,7 +16,8 @@ class SidebarFrame(ctk.CTkFrame):
     self.rowconfigure((0,2), weight=1)
     self.rowconfigure(1, weight=0)
 
-    self.mongo = Mongo.MongoFrame(
+    self.mongo = MongoFrame(
+      client,
       self
     )
     self.mongo.grid(
@@ -24,7 +26,17 @@ class SidebarFrame(ctk.CTkFrame):
       sticky='n'
     )
 
-    self.updates = Updates.updateFrame(
+    self.sites = SiteControl(
+      client,
+      self.master,
+      self,
+    )
+    self.sites.grid(
+      row = 1,
+      column = 0,
+      sticky = 'nsew'
+    )
+    self.updates = OptionsFrame(
       self
     )
     self.updates.grid(

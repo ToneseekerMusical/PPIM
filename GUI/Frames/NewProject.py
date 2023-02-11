@@ -1,24 +1,23 @@
-import customtkinter
-from GUI.Frames.NewProject.NewProjectGithub import githubFrame
-from GUI.Frames.NewProject.NewProjectDBInfo import mongoDBFrame
-from GUI.Frames.NewProject.NewProjectPlugins import pluginFrame
-from GUI.Frames.NewProject.NewProjectInfo import projectFrame
+import customtkinter as ctk
+from GUI.Frames.NewProjectFrames.NewProjectGithub import githubFrame
+from GUI.Frames.NewProjectFrames.NewProjectDBInfo import mongoDBFrame
+from GUI.Frames.NewProjectFrames.NewProjectPlugins import pluginFrame
+from GUI.Frames.NewProjectFrames.NewProjectInfo import projectFrame
 from GUI.Frames.Shell import shellFrame
 
-class newProject():
-  def __init__(self,tabview:customtkinter.CTkTabview,tabname:str):
-    super().__init__()
+class NewProjectFrame(ctk.CTkFrame):
+  def __init__(self,*args,**kwargs):
+    super().__init__(
+      *args,
+      **kwargs
+      )
         # create tabview
-    tabview.grid(
-      row=0,
-      column=1,
-      sticky="nsew")
-    tabview.add(tabname)
-    tabview.tab(tabname).grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
-    tabview.tab(tabname).grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
+
+    self.grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
+    self.grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
 
     #Create Project Frame
-    self.projectInfo = projectFrame(tabview.tab(tabname),corner_radius=0)
+    self.projectInfo = projectFrame(self,corner_radius=0)
     self.projectInfo.grid(
       row=0,
       column=0,
@@ -27,7 +26,7 @@ class newProject():
     self.projectInfo.grid_columnconfigure((0,1), weight=1)
 
     #Create Github Frame
-    self.github = githubFrame(tabview.tab(tabname),corner_radius=0,)
+    self.github = githubFrame(self,corner_radius=0,)
     self.github.grid(
       row=0,
       column=1,
@@ -36,7 +35,7 @@ class newProject():
     self.github.grid_columnconfigure((0,1,2), weight=1)
 
     #Create MongoDB Frame
-    self.mongoDB = mongoDBFrame(tabview.tab(tabname),corner_radius=0,)
+    self.mongoDB = mongoDBFrame(self,corner_radius=0,)
     self.mongoDB.grid(
       row=0,
       column=2,
@@ -45,7 +44,7 @@ class newProject():
     self.mongoDB.grid_columnconfigure((0,1),weight=1)
 
     #Create Plugin Frame
-    self.plugins = pluginFrame(tabview.tab(tabname), corner_radius=0)
+    self.plugins = pluginFrame(self, corner_radius=0)
     self.plugins.grid(
       row=1,
       column=0,
@@ -55,8 +54,8 @@ class newProject():
     self.plugins.grid_columnconfigure((0,1,2,3,4,5), weight=1)
 
     #Create Payload Instance Frame
-    self.createInstance_frame = customtkinter.CTkFrame(
-      tabview.tab(tabname),
+    self.createInstance_frame = ctk.CTkFrame(
+      self,
       corner_radius=0
     )
     self.createInstance_frame.grid(
@@ -67,9 +66,10 @@ class newProject():
 
     self.createInstance_frame.grid_columnconfigure(0, weight=1)
     self.createInstance_frame.grid_rowconfigure(0, weight=1)
-    self.newPayloadButton = customtkinter.CTkButton(
+    
+    self.newPayloadButton = ctk.CTkButton(
       self.createInstance_frame,
-      text='Create New Project',
+      text='Create New Site',
       command=self.createNewPayloadSite
       )
     self.newPayloadButton.grid(
@@ -81,7 +81,7 @@ class newProject():
       )
 
     #Create Shell Frame
-    self.shell = shellFrame(tabview.tab(tabname), corner_radius=0)
+    self.shell = shellFrame(self, corner_radius=0)
     self.shell.grid(
       row=2,
       column=0,
