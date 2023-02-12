@@ -3,42 +3,45 @@ from Controllers.Mongo import MongoDB
 from GUI.Frames.NewProject import NewProjectFrame
 
 class SiteControl(ctk.CTkFrame):
-  def __init__(self,client:MongoDB,main:ctk.CTk,*args,**kwargs):
+  def __init__(self,main:ctk.CTk,dblist = ['No sites found'],*args,**kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
       *args,
       **kwargs
     )
-    self.sites = client.dbList
+
+    if dblist == []:
+      dblist = ['No sites found']
+    self.sites = dblist
     self.main = main
-
-    print(f'The database list is: {self.sites}')
-    if self.sites != []:
-      self.selectLabel = ctk.CTkLabel(
-        self,
-        text='Select a Site'
-      )
-      self.selectLabel.grid(
-        row = 0,
-        column = 0,
-        padx = 10,
-        pady = 5,
-        sticky = 'ew'
-      )
-      self.siteSelect = ctk.CTkOptionMenu(
-        self,
-        values=self.sites,
-        command=self.DisplaySite
-      )
-      self.siteSelect.grid(
-        row = 1,
-        column = 0,
-        padx = 10,
-        pady = 5,
-        sticky = 'ew'
+    print(self.sites)
+    self.selectLabel = ctk.CTkLabel(
+      self,
+      text='Select a Site'
+    )
+    self.selectLabel.grid(
+      row = 0,
+      column = 0,
+      padx = 10,
+      pady = 5,
+      sticky = 'ew'
+    )
+    self.siteSelect = ctk.CTkOptionMenu(
+      self,
+      values=self.sites,
+      command=self.DisplaySite
+    )
+    self.siteSelect.grid(
+      row = 1,
+      column = 0,
+      padx = 10,
+      pady = 5,
+      sticky = 'ew'
       )
 
+    if self.sites != ['No sites found']:
+    
       self.addSiteBtn = ctk.CTkButton(
         self,
         text = 'Delete Site',
@@ -67,9 +70,10 @@ class SiteControl(ctk.CTkFrame):
     else:
       self.AddSite()
 
+
   def DisplaySite(self,site):
     print(f'Displaying {site}')
-
+  
   def AddSite(self):
     self.newProject = NewProjectFrame(
       self.main
@@ -79,6 +83,6 @@ class SiteControl(ctk.CTkFrame):
       column = 1,
       sticky = 'nsew'
     )
-
+  
   def DeleteSite(self):
     print(f'Deleting {self.siteSelect.get()}')

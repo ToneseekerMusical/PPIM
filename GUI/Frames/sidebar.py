@@ -2,17 +2,18 @@ import customtkinter as ctk
 from GUI.Frames.Sidebar.Options import OptionsFrame
 from GUI.Frames.Sidebar.Mongo import MongoFrame
 from GUI.Frames.Sidebar.SiteControl import SiteControl
+from Controllers.Mongo import MongoDB
 
 class SidebarFrame(ctk.CTkFrame):
-  def __init__(self,client,*args,**kwargs):
+  def __init__(self,client:MongoDB,*args,**kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
+      width = 200,
       *args,
       **kwargs
       )
 
-    self.columnconfigure(0,weight=0)
     self.rowconfigure((0,2), weight=1)
     self.rowconfigure(1, weight=0)
 
@@ -21,26 +22,30 @@ class SidebarFrame(ctk.CTkFrame):
       self
     )
     self.mongo.grid(
+      padx=0,
       row=0,
       column=0,
-      sticky='n'
+      sticky='nw'
     )
 
     self.sites = SiteControl(
-      client,
       self.master,
+      client.dbList,
       self,
     )
     self.sites.grid(
-      row = 1,
-      column = 0,
-      sticky = 'nsew'
+      padx=0,
+      row=1,
+      column=0,
+      sticky='w'
     )
-    self.updates = OptionsFrame(
+
+    self.options = OptionsFrame(
       self
     )
-    self.updates.grid(
+    self.options.grid(
+      padx = 0,
       row=2,
       column=0,
-      sticky='s',
+      sticky='sw',
     )

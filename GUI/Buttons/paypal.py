@@ -21,7 +21,7 @@ class PaypalButton(ctk.CTkButton):
 
       # create label on CTkToplevel window
       label = ctk.CTkLabel(self.win, text="CTkToplevel window")
-      label.pack(side="top", fill="both", expand=True, padx=40, pady=40)
+      label.pack(side="top", fill="both", expand=True, padx=20, pady=20)
       self.donateopen=True
       self.configure(state='disabled')
 

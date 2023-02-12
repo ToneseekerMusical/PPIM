@@ -37,6 +37,7 @@ class Setup():
 
     Path(f'{srv}\mongod.pid').touch()
     Path(f'{srv}\mongod.log').touch()
+    Path(f'{self.__instPath}\websites').touch()
 
     if not System.get_service('MongoDB'):
       ctypes.windll.shell32.ShellExecuteW(

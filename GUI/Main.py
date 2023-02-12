@@ -3,7 +3,6 @@ from GUI.Frames.sidebar import SidebarFrame
 from Controllers.Mongo import MongoDB
 from pymongo.database import Database
 
-ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
 class App(ctk.CTk):
@@ -13,14 +12,16 @@ class App(ctk.CTk):
     self.PPIM = PPIM
     # configure window
     self.title("Python PayloadCMS Instance Manager")
-    self.geometry(f"{1200}x{680}")
+    width  = self.winfo_screenwidth()
+    height = self.winfo_screenheight()
+    self.geometry(f'{width/2}x{height/2}')
+    #self.geometry(f"{200}x{200}")
     ctk.set_appearance_mode('dark')
-
+    self.resizable(False,False)
     # configure grid layout (4x4)
+    self.grid_columnconfigure(0, weight=0)
     self.grid_columnconfigure(1, weight=1)
-    self.grid_columnconfigure(2, weight=0)
     self.grid_rowconfigure(0, weight=1)
-
     #Create Side Bar
     self.sidebar = SidebarFrame(
       self.client,
@@ -29,5 +30,5 @@ class App(ctk.CTk):
     self.sidebar.grid(
       row=0,
       column=0,
-      sticky="ns"
+      sticky="nsw"
       )

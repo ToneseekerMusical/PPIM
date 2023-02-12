@@ -12,7 +12,7 @@ class SettingsFrame(ctk.CTkFrame):
     self.appearance_mode_optionemenu.grid(
       row=2,
       column=0,
-      padx=20,
+      padx=10,
       pady=(10, 10)
       )
 
@@ -23,7 +23,7 @@ class SettingsFrame(ctk.CTkFrame):
     self.scaling_label.grid(
       row=3,
       column=0,
-      padx=20,
+      padx=10,
       pady=(10, 0)
       )
 
@@ -35,7 +35,7 @@ class SettingsFrame(ctk.CTkFrame):
     self.scaling_optionemenu.grid(
       row=4,
       column=0,
-      padx=20,
+      padx=10,
       pady=(10, 20)
       )
     

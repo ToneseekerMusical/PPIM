@@ -23,7 +23,7 @@ class btn(ctk.CTkButton):
 
       # create label on CTkToplevel window
       self.frame = self.frame(self.win)
-      self.frame.pack(side="top", fill="both", expand=True, padx=40, pady=40)
+      self.frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
       self.windowOpen=True
       self.configure(state='disabled')
 
