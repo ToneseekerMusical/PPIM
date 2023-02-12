@@ -28,59 +28,64 @@ class NewProjectFrame(ctk.CTkFrame):
 
     self.grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((0,1), weight=0)  # configure grid of individual tabs
-    self.grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
+    self.grid_rowconfigure(2, minsize=0, weight=1)  # configure grid of individual tabs
 
     #Create Github Frame
     self.github = Github(self)
-    self.github.grid(row=0,column=1)
+    self.github.grid(row=0,column=1,padx=5,sticky='ew')
 
     #Create MongoDB Frame
-    self.frontendInfo = Frontend(self.feTemplates,self.beTemplates,self.nodeVersions,self)
-    self.frontendInfo.grid(row=0,column=2,padx=5)
+    self.frontendInfo = Frontend(self.nodeVersions,self.feTemplates,self.beTemplates,self)
+    self.frontendInfo.grid(row=0,column=2,padx=(5,10),sticky='ew')
 
     #Create MongoDB Frame
     self.backendInfo = Backend(self.mongoDBVersion,self)
-    self.backendInfo.grid(row=1,column=2,padx=5)
+    self.backendInfo.grid(row=1,rowspan=2,column=2,padx=(5,10),pady=(0,5),sticky='new')
 
     #Create Project Frame
     self.projectInfo = Project(self.backendInfo, self)
-    self.projectInfo.grid(row=0,column=0,padx=5)
+    self.projectInfo.grid(row=0,column=0,padx=5,sticky='ew')
 
     #Create Plugin Frame
     self.plugins = Plugins(self.plugins,self)
-    self.plugins.grid(row=1,column=0,columnspan=2,padx=5,sticky='ew')
-
-    #Create Payload Instance Frame
-    self.createInstance_frame = ctk.CTkFrame(self)
-    self.createInstance_frame.grid(row=2,column=2)
-
-    self.createInstance_frame.grid_columnconfigure(0, weight=1)
-    self.createInstance_frame.grid_rowconfigure(0, weight=1)
+    self.plugins.grid(row=1,column=0,columnspan=2,padx=5,pady=(0,10),sticky='nsew')
     
     self.newPayloadButton = ctk.CTkButton(
-      self.createInstance_frame,
+      self,
       text='Create New Site',
       command=self.createNewPayloadSite
       )
     self.newPayloadButton.grid(
-      row=0,
-      column=0,
+      row=3,
+      column=2,
       padx=(5,10),
-      pady=5,
+      pady=(5,10),
       sticky='nsew'
       )
 
-    #Create Shell Frame
-    self.shell = shellFrame(self, corner_radius=0)
-    self.shell.grid(
+    self.progress = ctk.CTkProgressBar(
+      self,
+      mode='indeterminate'
+    )
+    self.progress.grid(
       row=2,
       column=0,
       columnspan=2,
-      sticky="nsew"
+      padx=5,
+      sticky='sew'
     )
-    self.shell.grid_columnconfigure((0,1,2), weight = 1)
-    self.shell.grid_rowconfigure(1,weight=1)
 
+    self.readout = ctk.CTkLabel(
+      self,
+      text='installation progress readout'
+    )
+    self.readout.grid(
+      row=3,
+      column=0,
+      columnspan=2,
+      pady=(0,10),
+      sticky='ew'
+    )
     # set default values
     #only enable button when  
     #self.newPayloadButton.configure(state='disabled')
