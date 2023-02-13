@@ -25,6 +25,7 @@ class App(ctk.CTk):
     #Create Side Bar
     self.sidebar = SidebarFrame(
       self.client,
+      self.PPIM,
       self,corner_radius=0,
       )
     self.sidebar.grid(

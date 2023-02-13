@@ -39,6 +39,7 @@ class MongoDB():
     if not hasattr(self, 'server') and conStr == '':
       raise Exception('You must first initialize the database with a connection string!')
     if not hasattr(self,'server') and conStr != '' and dbName == '':
+      self.conStr = conStr
       self.server = self.__TestConnect(conStr)
     if self.server != None:
       if dbName != '':
@@ -46,6 +47,9 @@ class MongoDB():
         return self.server[dbName]
       elif dbName == '':
         self.dbList = [x for x in self.server.list_database_names() if x not in self.adminDB]
+
+  def RefreshServer(self):
+    self.dbList = [x for x in self.server.list_database_names() if x not in self.adminDB]
 
   #Checks if database already exists, if not, checks if new name is valid.
   #Checks name, if valid, creates the databas with site info collection

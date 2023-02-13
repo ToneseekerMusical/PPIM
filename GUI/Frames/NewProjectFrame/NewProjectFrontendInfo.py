@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 class frontendFrame(ctk.CTkTabview):
-  def __init__(self, feTemplates, beTemplates, nodeVersions, *args, **kwargs):
+  def __init__(self, nodeversions, frontendTemplates, adminTemplates, *args, **kwargs):
     super().__init__(
       corner_radius=10,
       width=5,
@@ -13,7 +13,7 @@ class frontendFrame(ctk.CTkTabview):
     self.add('Frontend Config')
 
     self.labels = {
-      'nodeVersion': ctk.CTkLabel(self.tab('Frontend Config'),text='NodeJS Version:'),
+      'nodeVersiontemplate': ctk.CTkLabel(self.tab('Frontend Config'),text='NodeJS Version:'),
       'frontendTemplateLabel': ctk.CTkLabel(self.tab('Frontend Config'),text='Frontend Template:'),
       'adminTemplateLabel': ctk.CTkLabel(self.tab('Frontend Config'),text='Admin Template:'),
     }
@@ -24,9 +24,9 @@ class frontendFrame(ctk.CTkTabview):
       self.__rowcount += 1
 
     self.inputs = {
-      'frontendTempSelect':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=feTemplates),
-      'adminTempSelect':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=beTemplates),
-      'nodeJSSelect':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=nodeVersions)
+      'nodeJSversion':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=nodeversions),
+      'frontendTemplate':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=frontendTemplates),
+      'adminTemplate':ctk.CTkOptionMenu(self.tab('Frontend Config'),values=adminTemplates),
     }
 
     self.__rowcount=0

@@ -3,9 +3,10 @@ from GUI.Frames.Sidebar.Options import OptionsFrame
 from GUI.Frames.Sidebar.Mongo import MongoFrame
 from GUI.Frames.Sidebar.SiteControl import SiteControl
 from Controllers.Mongo import MongoDB
+from pymongo.database import Database
 
 class SidebarFrame(ctk.CTkFrame):
-  def __init__(self,client:MongoDB,*args,**kwargs):
+  def __init__(self,client:MongoDB,PPIM:Database,*args,**kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
@@ -30,7 +31,8 @@ class SidebarFrame(ctk.CTkFrame):
 
     self.sites = SiteControl(
       self.master,
-      client.dbList,
+      client,
+      PPIM,
       self,
     )
     self.sites.grid(

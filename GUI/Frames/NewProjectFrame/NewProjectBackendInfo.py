@@ -14,7 +14,7 @@ class BackendFrame(ctk.CTkTabview):
 
     self.labels = {
       'mongoDBversion': ctk.CTkLabel(self.tab('Backend Config'),text='MongoDB Version:'),
-      'databaseURI': ctk.CTkLabel(self.tab('Backend Config'),text='Database Url:'),
+      'databaseURI': ctk.CTkLabel(self.tab('Backend Config'),text='Database URI:'),
       'databaseName': ctk.CTkLabel(self.tab('Backend Config'),text='Database Name:'),
     }
 
