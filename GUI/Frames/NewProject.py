@@ -28,8 +28,8 @@ class NewProjectFrame(ctk.CTkFrame):
       'Image-Kit','Redis-Cache','Zapier','Google-One-Tap','Phone-Field','Default-Roles'
     ]
 
-    self.frontendTemplates = ['Payload Website','None']
-    self.adminTemplates = ['Payload Admin','None']
+    self.frontendTemplates = ['create-react-app','create-react-native-app','create-next-app','create-vite-app']
+    self.adminTemplates = ['None','Payload Admin',]
 
     self.grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((0,1), weight=0)  # configure grid of individual tabs
@@ -63,9 +63,6 @@ class NewProjectFrame(ctk.CTkFrame):
 
     self.readout = ctk.CTkLabel(self,text='installation progress readout')
     self.readout.grid(row=3,column=0,columnspan=2,pady=(0,10),sticky='ew')
-    # set default values
-    #only enable button when  
-    #self.newPayloadButton.configure(state='disabled')
   
   def createNewPayloadSite(self):
     field:ctk.CTkBaseClass | ctk.CTkCheckBox

@@ -1,7 +1,10 @@
 import customtkinter as ctk
 from GUI.Frames.newproject import NewProjectFrame
+from GUI.Frames.project import ProjectFrame
 from Controllers.Mongo import MongoDB
 from pymongo.database import Database
+from pathlib import Path
+import shutil
 
 class SiteControl(ctk.CTkFrame):
   def __init__(self,main:ctk.CTk,client:MongoDB,PPIM:Database,*args,**kwargs):
@@ -29,7 +32,8 @@ class SiteControl(ctk.CTkFrame):
     self.SiteManagement()
 
   def DisplaySite(self,site):
-    print(f'Displaying {site}')
+    self.project = ProjectFrame(self.client,site,self.main)
+    self.project.grid(row=0,column=1,sticky='nsew')
   
   def AddSite(self):
     self.newProject = NewProjectFrame(self.client,self.PPIM,self.main)
@@ -65,11 +69,13 @@ class SiteControl(ctk.CTkFrame):
       self.client.RefreshServer()
       self.dbList = self.client.dbList
       self.siteSelect.configure(values=self.dbList)
-
+      path = Path(f'{Path.cwd()}\\websites\\{self.siteSelect.get()}')
+      shutil.rmtree(f'{path}')
       if len(self.dbList) > 0:
         self.DisplaySite(self.dbList[0])
         self.siteSelect.set(self.dbList[0])
       else:
+        self.project.grid_remove()
         self.dbList = ['No sites found']
         self.siteSelect.set(self.dbList[0])
         self.delSiteBtn.destroy()

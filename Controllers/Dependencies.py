@@ -169,7 +169,7 @@ class Dependencies():
         for version in self.__json[dep]:
           vers = [x for x in version['files'] if self.__os['system'] in x and self.__os['arch'] in x and self.__os['package'] in x]
           for ver in vers:
-            if str(version['version'].split(".")[0]) not in verFilter:
+            if str(version['version'].split(".")[0]) not in verFilter and int(version['version'][-1:]) >= 16:
               verFilter.append(str(version["version"].split(".")[0]))
               self.allDependencies[dep][version['version']] = {}
               self.allDependencies[dep][version['version']]['version'] = version['version']

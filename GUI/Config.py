@@ -10,7 +10,6 @@ ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark
 class App(ctk.CTk):
   def __init__(self):
     super().__init__()
-    print('config')
     self.wm_title("AppWindow Test")
     self.attributes('-topmost',1)
     self.overrideredirect(True)

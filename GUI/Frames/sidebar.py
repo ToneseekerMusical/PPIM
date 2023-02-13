@@ -39,7 +39,7 @@ class SidebarFrame(ctk.CTkFrame):
       padx=0,
       row=1,
       column=0,
-      sticky='w'
+      sticky='nsew'
     )
 
     self.options = OptionsFrame(

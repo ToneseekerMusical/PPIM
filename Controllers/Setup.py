@@ -56,6 +56,8 @@ class Setup():
     dependencies = Dependencies(self.__mongoVer,'config',self.__instPath)
     dependencies = dependencies.allDependencies
 
+    
+
     ver = '0.0.01dev'
 
     db = MongoDB()
