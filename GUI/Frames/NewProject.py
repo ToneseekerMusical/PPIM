@@ -1,9 +1,9 @@
 import customtkinter as ctk
-from GUI.Frames.NewProjectFrame.NewProjectGithub import githubFrame as Github
-from GUI.Frames.NewProjectFrame.NewProjectFrontendInfo import frontendFrame as Frontend
-from GUI.Frames.NewProjectFrame.NewProjectPlugins import pluginFrame as Plugins
-from GUI.Frames.NewProjectFrame.NewProjectInfo import projectFrame as Project
-from GUI.Frames.NewProjectFrame.NewProjectBackendInfo import BackendFrame as Backend
+from GUI.Frames.NewProjectFrames.NewProjectGithub import githubFrame as Github
+from GUI.Frames.NewProjectFrames.NewProjectFrontendInfo import frontendFrame as Frontend
+from GUI.Frames.NewProjectFrames.NewProjectPlugins import pluginFrame as Plugins
+from GUI.Frames.NewProjectFrames.NewProjectInfo import projectFrame as Project
+from GUI.Frames.NewProjectFrames.NewProjectBackendInfo import BackendFrame as Backend
 from Controllers.Mongo import MongoDB
 from Controllers.SiteManagement import SiteManagement
 from pymongo.database import Database
@@ -33,7 +33,7 @@ class NewProjectFrame(ctk.CTkFrame):
 
     self.grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((0,1), weight=0)  # configure grid of individual tabs
-    self.grid_rowconfigure(2, minsize=0, weight=1)  # configure grid of individual tabs
+    self.grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
 
     #Create Github Frame
     self.github = Github(self)
@@ -82,7 +82,7 @@ class NewProjectFrame(ctk.CTkFrame):
     for name, field in self.frontendInfo.inputs.items():
       document['frontend'][name] = field.get()
     for name, field in self.plugins.inputs.items():
-      document['plugins'][name] = field.get()
+      document['plugins'][name]['enabled'] = field.get()
     for name, field in self.backendInfo.inputs.items():
       if type(field) == ctk.CTkLabel and name != 'databaseName':
         document['backend'][name] = f'{field.cget("text")}'

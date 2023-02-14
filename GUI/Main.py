@@ -15,7 +15,6 @@ class App(ctk.CTk):
     width  = self.winfo_screenwidth()
     height = self.winfo_screenheight()
     self.geometry(f'{width/2}x{height/2}')
-    #self.geometry(f"{200}x{200}")
     ctk.set_appearance_mode('dark')
     self.resizable(False,False)
     # configure grid layout (4x4)

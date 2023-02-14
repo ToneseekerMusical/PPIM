@@ -1,5 +1,4 @@
 import customtkinter as ctk
-from pathlib import Path
 from Controllers.Mongo import MongoDB
 import ctypes, sys
 
