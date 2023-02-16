@@ -63,7 +63,7 @@ class Setup():
     db = MongoDB()
     db.StartService()
     db.Connect(
-    "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM"
+    "mongodb://localhost:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM"
     )
     db = db.Connect(dbName='PPIM')
     sys = {

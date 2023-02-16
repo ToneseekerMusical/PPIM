@@ -1,7 +1,10 @@
 import customtkinter as ctk
+import webbrowser
+from pymongo.database import Database
+import subprocess
 
 class projectInfo(ctk.CTkTabview):
-  def __init__(self, *args, **kwargs):
+  def __init__(self, frontendInfo, db:Database, site, *args, **kwargs):
     super().__init__(
       corner_radius=10,
       width=5,
@@ -11,22 +14,31 @@ class projectInfo(ctk.CTkTabview):
     #create shell frame
     self.add('Site Info')
     self.add('Edit')
+    self.tab('Site Info').grid_columnconfigure((0,1),weight=1)
+    self.tab('Edit').grid_columnconfigure((0,1),weight=1)
+    self.site = site
+    self.db = db
+    self.frontendInfo = frontendInfo
+    self.frontendHost = self.frontendInfo['frontendHost']
+    self.frontendPort = self.frontendInfo['frontendPort']
+    self.adminHost = self.frontendInfo['adminHost']
+    self.adminPort = self.frontendInfo['adminPort']
 
     self.tabs = {
       'Site Info':{
         'labels':{
-          'frontendURLLabel':ctk.CTkLabel(self.tab('Site Info'),text='Frontend Link:',anchor='w'),
-          'frontendCodeLabel':ctk.CTkLabel(self.tab('Site Info'),text='Frontend Code:',anchor='w'),
-          'adminURLLabel':ctk.CTkLabel(self.tab('Site Info'),text='Admin Link:',anchor='w'),
-          'adminCodeLabel':ctk.CTkLabel(self.tab('Site Info'),text='Admin Code:',anchor='w'),
+          'frontendURLLabel':ctk.CTkLabel(self.tab('Site Info'),text='Frontend Site:',anchor='w'),
+          'adminURLLabel':ctk.CTkLabel(self.tab('Site Info'),text='Admin Site:',anchor='w'),
           'nodeLabel':ctk.CTkLabel(self.tab('Site Info'),text='Node Version:',anchor='w'),
+          'frontendCodeLabel':ctk.CTkLabel(self.tab('Site Info'),text='Frontend Code:',anchor='w'),
+          'adminCodeLabel':ctk.CTkLabel(self.tab('Site Info'),text='Admin Code:',anchor='w'),
         },
         'inputs':{
-          'FrontendURL': ctk.CTkLabel(self.tab('Site Info'),text='http://localhost:3001',anchor='w'),
-          'AdminURL': ctk.CTkLabel(self.tab('Site Info'),text='http://localhost:3000',anchor='w'),
-          'NodeVersion': ctk.CTkLabel(self.tab('Site Info'),text='v18.12.1',anchor='w'),
-          'FrontendBtn': ctk.CTkButton(self.tab('Site Info'),text='Open in VS Code'),
-          'AdminBtn': ctk.CTkButton(self.tab('Site Info'),text='Open in VS Code'),
+          'FrontendURL': ctk.CTkButton(self.tab('Site Info'),text='Open in Browser',command=lambda:self.OpenURL('frontend')),
+          'AdminURL': ctk.CTkButton(self.tab('Site Info'),text='Open in Browser',command=lambda:self.OpenURL('admin')),
+          'NodeVersion': ctk.CTkLabel(self.tab('Site Info'),text=self.frontendInfo['nodeJSversion'],anchor='w'),
+          'FrontendBtn': ctk.CTkButton(self.tab('Site Info'),text='Open in VS Code',command=lambda:self.OpenCode(self.frontendInfo['frontendPath'])),
+          'AdminBtn': ctk.CTkButton(self.tab('Site Info'),text='Open in VS Code',command=lambda:self.OpenCode(self.frontendInfo['adminPath'])),
         }
       },
       'Edit':{
@@ -37,11 +49,11 @@ class projectInfo(ctk.CTkTabview):
           'AdminPortLabel': ctk.CTkLabel(self.tab('Edit'),text='Edit Admin Port:',anchor='w'),
         },
         'inputs':{
-          'FrontendURL':ctk.CTkEntry(self.tab('Edit'),placeholder_text='http://localhost'),
-          'FrontendPort':ctk.CTkEntry(self.tab('Edit'),placeholder_text='3001'),
-          'AdminURL':ctk.CTkEntry(self.tab('Edit'),placeholder_text='http://localhost'),
-          'AdminPort':ctk.CTkEntry(self.tab('Edit'),placeholder_text='3000'),
-          'Submit': ctk.CTkButton(self.tab('Edit'),text='Submit'),
+          'FrontendHost':ctk.CTkEntry(self.tab('Edit'),placeholder_text=self.frontendHost),
+          'FrontendPort':ctk.CTkEntry(self.tab('Edit'),placeholder_text=self.frontendPort),
+          'AdminHost':ctk.CTkEntry(self.tab('Edit'),placeholder_text=self.adminHost),
+          'AdminPort':ctk.CTkEntry(self.tab('Edit'),placeholder_text=self.adminPort),
+          'Submit': ctk.CTkButton(self.tab('Edit'),text='Submit',command=self.updateHost),
         }
       }}
 
@@ -57,5 +69,30 @@ class projectInfo(ctk.CTkTabview):
       row = 0
       column = 0
 
-  def OpenFrontendCode(self):...
-  def OpenAdminCode(self):...
+  def OpenURL(self,name):
+    webbrowser.open(f'{getattr(self,f"{name}Host")}:{self.frontendInfo[f"{name}Port"]}',2)
+  
+  def updateHost(self):
+    if self.tabs['Edit']['inputs']['FrontendHost'].get() != '':
+      self.frontendHost = self.tabs['Edit']['inputs']['FrontendHost'].get()
+    if self.tabs['Edit']['inputs']['FrontendPort'].get() != '':
+      self.frontendPort = self.tabs['Edit']['inputs']['FrontendPort'].get()
+    if self.tabs['Edit']['inputs']['AdminHost'].get() != '':
+      self.adminHost = self.tabs['Edit']['inputs']['AdminHost'].get()
+    if self.tabs['Edit']['inputs']['AdminPort'].get() != '':
+      self.adminPort = self.tabs['Edit']['inputs']['AdminPort'].get()
+    
+    document = {
+      '$set':{
+        'frontend.frontendPort':self.frontendPort,
+        'frontend.frontendHost':self.frontendHost,
+        'frontend.adminPort':self.adminPort,
+        'frontend.adminHost':self.adminHost
+        }
+      }
+
+    self.db.get_collection('Site Info').update_one({'_id':self.site},update=document)
+
+
+  def OpenCode(self,path):
+    subprocess.run(['code',f'{path}'])

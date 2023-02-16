@@ -11,6 +11,7 @@ class SiteManagement():
     self.client = client
     self.payloadDeps = PPIM.get_collection('System').find_one()
     self.payloadDeps = self.payloadDeps['Dependencies']['NodeJS']
+    self.output = None
 
 
   def CreateSiteDB(self,document):
@@ -56,12 +57,12 @@ class SiteManagement():
     for location, path in self.locations.items():
       p = f'{Path(path)}'
       if location == 'admin':
-        subprocess.Popen(['powershell.exe','npm','i','create-payload-app'],cwd=p)
+        subprocess.run(['powershell.exe','npm','i','create-payload-app'],cwd=p)
         with subprocess.Popen(['powershell.exe','npx','create-payload-app','--name','admin','--template','blank',],
           cwd=p,stdin=subprocess.PIPE, text=True,) as npm:
           npm.stdin.write(f'{self.conStr}/{name}\n')
-      #if location == 'frontend':
-      #  subprocess.Popen(['powershell.exe','npm','i',f'{self.frontend}'],cwd=p)
+      if location == 'frontend':
+        subprocess.Popen(['powershell.exe','npm','i',f'{self.frontend}'],cwd=p)
 
   def __DeleteDirectory(self):...
   

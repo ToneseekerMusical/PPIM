@@ -4,7 +4,7 @@ from Controllers.Mongo import MongoCompass as Compass
 from Controllers.Mongo import MongoSH as MongoSH
 
 class MongoFrame(ctk.CTkFrame):
-  def __init__(self, db:MongoDB, *args, **kwargs):
+  def __init__(self, client:MongoDB, *args, **kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
@@ -12,7 +12,7 @@ class MongoFrame(ctk.CTkFrame):
       **kwargs
       )
     
-    self.db = db
+    self.client = client
 
     self.logo_label = ctk.CTkLabel(
       self,
@@ -76,7 +76,7 @@ class MongoFrame(ctk.CTkFrame):
     self.openMongosh = ctk.CTkButton(
       self,
       text='Open MongoSH',
-      command=MongoSH.startMongosh
+      command=lambda: MongoSH.startMongosh(self.client.conStr)
       )
     self.openMongosh.grid(
       row=4,
@@ -89,7 +89,7 @@ class MongoFrame(ctk.CTkFrame):
     self.launchCompassButton = ctk.CTkButton(
       self,
       text='Open Compass',
-      command=Compass.startCompass
+      command=lambda: Compass.startCompass(self.client.conStr)
       )
     self.launchCompassButton.grid(
       row=5,
@@ -102,15 +102,15 @@ class MongoFrame(ctk.CTkFrame):
     self.monitorMongoDB()
 
   def startMongoDB(self):
-    self.db.StartService()
+    self.client.StartService()
     self.monitorMongoDB()
   
   def stopMongoDB(self):
-    self.db.StopService()
+    self.client.StopService()
     self.monitorMongoDB()
 
   def monitorMongoDB(self):
-    status = self.db.mongoStatus()
+    status = self.client.mongoStatus()
     if status == 'stopped':
       self.startMongo.configure(state='normal')
       self.MongoStatus.configure(

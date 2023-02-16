@@ -20,76 +20,101 @@ class NewProjectFrame(ctk.CTkFrame):
     
     self.client = client
     self.PPIM = PPIM
+    self.githubUser = 'Username'
     self.versions = PPIM.get_collection('System').find_one()
     self.mongoDBVersions = list(self.versions['Dependencies']['MongoDB'].keys())[:-2]
     self.nodeVersions = list(self.versions['Dependencies']['NodeJS'].keys())[:-2]
-    self.plugins = ['Cloud-Storage','SEO','Form-Builder','S3-Upload','Lexical','Search',
-      'webP','Blurhash','Stripe','Auth0','Cloudinary','NestedDocs','Hash-Upload','oAuth',
-      'Image-Kit','Redis-Cache','Zapier','Google-One-Tap','Phone-Field','Default-Roles'
-    ]
+    self.plugins = ['Auth0','Blurhash','Cloud-Storage','Cloudinary','Default-Roles',
+      'Form-Builder','Google-One-Tap','Hash-Upload','Image-Kit','Lexical','NestedDocs',
+      'oAuth','Phone-Field','Redis-Cache','S3-Upload','Search','SEO','Stripe','webP',
+      'Zapier']
+    self.payloadVersions = ['1.6.10','1.6.9','1.6.8','1.6.7']
 
     self.frontendTemplates = ['create-react-app','create-react-native-app','create-next-app','create-vite-app']
     self.adminTemplates = ['None','Payload Admin',]
 
-    self.grid_columnconfigure((0,1,2), weight=1)  # configure grid of individual tabs
-    self.grid_rowconfigure((0,1), weight=0)  # configure grid of individual tabs
-    self.grid_rowconfigure(2, weight=1)  # configure grid of individual tabs
+    self.grid_columnconfigure((0,1), weight=1)  # configure grid of individual tabs
+    self.grid_rowconfigure((0,1,2,3), weight=1)  # configure grid of individual tabs
+    self.grid_rowconfigure((4,5), weight=1)  # configure grid of individual tabs
 
-    #Create Github Frame
-    self.github = Github(self)
-    self.github.grid(row=0,column=1,padx=5,sticky='ew')
+    self.title = ctk.CTkLabel(self,text='Add New Site',font=ctk.CTkFont(size=20,weight="bold"))
+    self.title.grid(row=0,column=0,columnspan=2,sticky='ew')
 
-    #Create MongoDB Frame
-    self.frontendInfo = Frontend(self.nodeVersions,self.frontendTemplates,self.adminTemplates,self)
-    self.frontendInfo.grid(row=0,column=2,padx=(5,10),sticky='ew')
+    self.githubInfo = Github(self.githubUser,self)
+    self.githubInfo.grid(row=1,column=1,padx=(5,10),sticky='ew')
 
-    #Create MongoDB Frame
+    self.frontendInfo = Frontend(self.nodeVersions,self.payloadVersions,self.frontendTemplates,self.adminTemplates,self)
+    self.frontendInfo.grid(row=2,column=0,padx=5,sticky='ew')
+
     self.backendInfo = Backend(self.mongoDBVersions,self)
-    self.backendInfo.grid(row=1,rowspan=2,column=2,padx=(5,10),pady=(0,5),sticky='new')
+    self.backendInfo.grid(row=2,column=1,padx=(5,10),sticky='ew')
 
-    #Create Project Frame
-    self.projectInfo = Project(self.backendInfo, self)
-    self.projectInfo.grid(row=0,column=0,padx=5,sticky='ew')
+    self.projectInfo = Project(self.backendInfo, self.githubInfo, self.githubUser, self)
+    self.projectInfo.grid(row=1,column=0,padx=5,sticky='ew')
 
-    #Create Plugin Frame
     self.plugins = Plugins(self.plugins,self)
-    self.plugins.grid(row=1,column=0,columnspan=2,padx=5,pady=(0,10),sticky='nsew')
+    self.plugins.grid(row=3,column=0,columnspan=2,padx=(5,10),pady=5,sticky='ew')
     
     self.newsite = ctk.CTkButton(self,text='Create New Site',command=self.createNewPayloadSite)
-    self.newsite.grid(row=3,column=2,padx=(5,10),pady=(5,10),sticky='nsew')
+    self.newsite.grid(row=4,rowspan=2,column=1,padx=(5,10),pady=(5,10),sticky='nsew')
 
     self.progress = ctk.CTkProgressBar(self,mode='indeterminate')
-    self.progress.grid(row=2,column=0,columnspan=2,padx=5,sticky='sew')
+    self.progress.grid(row=4,column=0,padx=5,pady=5,sticky='sew')
 
     self.readout = ctk.CTkLabel(self,text='installation progress readout')
-    self.readout.grid(row=3,column=0,columnspan=2,pady=(0,10),sticky='ew')
+    self.readout.grid(row=5,column=0,pady=(0,10),sticky='nsew')
   
   def createNewPayloadSite(self):
     field:ctk.CTkBaseClass | ctk.CTkCheckBox
     document = {'siteConfig':{},'github':{},'frontend':{},'plugins':{},'backend':{}}
+    
     for name, field in self.projectInfo.inputs.items():
       if type(field) == ctk.CTkLabel:
-        document['siteConfig'][name] = f'{Path().cwd()}{field.cget("text")}'
+        document['siteConfig'][name] = str(Path(f'{Path().cwd()}{field.cget("text")}'))
+        document['frontend']['frontendPath'] = str(Path(f'{Path().cwd()}{field.cget("text")}\\frontend'))
+        document['frontend']['adminPath'] = str(Path(f'{Path().cwd()}{field.cget("text")}\\admin'))
       if type(field) == ctk.CTkEntry and name == 'siteName':
         document['_id'] = f'{field.get().replace(" ","-")}'
         document['backend']['databaseName'] = f'{field.get().replace(" ","-")}'
         document['siteConfig'][name] = f'{field.get()}'
       if type(field) == ctk.CTkEntry:
         document['siteConfig'][name] = field.get()
-    for name, field in self.github.inputs.items():
-      if type(field) != ctk.CTkLabel:
+    
+    for name, field in self.githubInfo.inputs.items():
+      if type(field) not in (ctk.CTkLabel, ctk.CTkSwitch):
         document['github'][name] = field.get()
-    for name, field in self.frontendInfo.inputs.items():
+      if type(field) == ctk.CTkLabel:
+        document['github'][name] = field.cget('text')
+    
+    for name, field in self.frontendInfo.tabs['frontendConfig']['inputs'].items():
       document['frontend'][name] = field.get()
+      if name == 'frontendPort':
+        document['frontend'][name] = 3001
+      if name == 'adminPort':
+        document['frontend'][name] = 3000
+    document['frontend']['frontendHost'] = 'https://localhost'
+    document['frontend']['adminHost'] = 'https://localhost'
     for name, field in self.plugins.inputs.items():
+      document['plugins'][name] = {}
       document['plugins'][name]['enabled'] = field.get()
-    for name, field in self.backendInfo.inputs.items():
+    
+    for name, field in self.backendInfo.tabs['backendConfig']['inputs'].items():
       if type(field) == ctk.CTkLabel and name != 'databaseName':
         document['backend'][name] = f'{field.cget("text")}'
       if type(field) not in (ctk.CTkSwitch, ctk.CTkLabel) :
         document['backend'][name] = field.get()
+    if self.backendInfo.tabs['Edit']['inputs']['username'].get() != '':
+      document['backend']['username'] = self.backendInfo.tabs['Edit']['inputs']['username'].get()
+    else:
+      document['backend']['username'] = ''
+    if self.backendInfo.tabs['Edit']['inputs']['password'].get() != '':
+      document['backend']['password'] = self.backendInfo.tabs['Edit']['inputs']['password'].get()
+    else:
+      document['backend']['password'] = ''
+
     site = SiteManagement(self.PPIM,self.client)
     site.CreateSiteDB(document)
+    self.readout.configure(text=site.output)
     self.grid_remove()
     return document['_id']
     

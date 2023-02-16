@@ -17,7 +17,7 @@ if __name__ == "__main__":
       client = MongoDB()
       client.StartService()
       client.Connect(
-        "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
+        "mongodb://localhost:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=PPIM",
         )
       ppim = client.Connect(dbName='PPIM')
       try:

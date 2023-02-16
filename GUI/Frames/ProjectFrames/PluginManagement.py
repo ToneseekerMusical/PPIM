@@ -1,42 +1,47 @@
 import customtkinter as ctk
 from GUI.Buttons.pluginSettings import PluginSettingsBtn
+from GUI.Buttons.pluginSettings import PluginSettingsSwitch
 
 class pluginManager(ctk.CTkTabview):
-  def __init__(self, *args, **kwargs):
+  def __init__(self, plugins, *args, **kwargs):
     super().__init__(
       corner_radius=10,
       width=5,
       height=5,
       *args,
       **kwargs)
-    self.plugins = {'Cloud-Storage':{'enabled':True},'SEO':{'enabled':True},'Form-Builder':{'enabled':True},'S3-Upload':{'enabled':True},
-      'Lexical':{'enabled':True},'Search':{'enabled':True},'webP':{'enabled':True},'Blurhash':{'enabled':True},'Stripe':{'enabled':True},'Auth0':{'enabled':True},
-      'Cloudinary':{'enabled':True},'NestedDocs':{'enabled':False},'Hash-Upload':{'enabled':True},'oAuth':{'enabled':True},'Image-Kit':{'enabled':True},
-      'Redis-Cache':{'enabled':True},'Zapier':{'enabled':True},'Google-One-Tap':{'enabled':True},'Phone-Field':{'enabled':True},
-      'Default-Roles':{'enabled':True}
-    }
-    self.tabs = ['Plugins','Manage']
-    self.add('Plugins')
+    self.plugins = plugins
+    self.tabs = ['Plugin Settings','Manage']
+    self.add('Plugin Settings')
     self.add('Manage')
-    self.inputs = {'Plugins':{'buttons':{}},'Manage':{'switches':{}}}
+    self.tab('Plugin Settings').grid_columnconfigure((0,1), minsize=150, weight=1)
+    self.tab('Manage').grid_columnconfigure((0,1), minsize=150, weight=1)
+    self.inputs = {'Plugin Settings':{},'Manage':{}}
 
     row = 0
     column = 0
+    rowIndeces = []
     for tab, groups in self.inputs.items():
-      for group, groups in groups.items():
-        for plugin, settings in self.plugins.items():
-          if group == 'buttons':
-            self.inputs[tab][group][plugin] = PluginSettingsBtn(plugin,self.tab(tab))
-            self.inputs[tab][group][plugin].grid(row=row,column=column,padx=5,pady=5,sticky='ew')
-          if group == 'switches':
-            self.inputs[tab][group][plugin] = ctk.CTkSwitch(self.tab(tab),text=plugin.replace('-',' '))
-            self.inputs[tab][group][plugin].grid(row=row,column=column,padx=11.5,pady=6.5,sticky='ew')
-            if settings['enabled'] == True:
-              self.inputs[tab][group][plugin].select()
-          row += 1
-          if row >= len(self.plugins)//2:
-            row = 0
-            column += 1
-        row = 0 
+      for plugin, settings in self.plugins.items():
+        if tab == 'Plugin Settings':
+          self.inputs[tab][plugin] = PluginSettingsBtn(plugin,self.tab(tab))
+          self.inputs[tab][plugin].grid(row=row,column=column,padx=5,pady=5,sticky='ew')
+          if settings['enabled'] == False:
+            self.inputs[tab][plugin].configure(state='disabled')
+        if tab == 'Manage':
+          self.inputs[tab][plugin] = PluginSettingsSwitch(plugin,self.tab(tab))
+          self.inputs[tab][plugin].grid(row=row,column=column,padx=5,pady=6.5,sticky='ew')
+          if settings['enabled'] == True:
+            self.inputs[tab][plugin].select()
+        rowIndeces.append(row)
+        row += 1
+        if row >= len(self.plugins)//2:
+          row = 0
+          column += 1
       row = 0
       column = 0
+    row = 0
+    column = 0
+    rowIndeces = [*set(rowIndeces)]
+    self.tab('Plugin Settings').grid_rowconfigure(rowIndeces,weight=1)
+    self.tab('Manage').grid_rowconfigure(rowIndeces,weight=1)

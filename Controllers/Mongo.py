@@ -86,12 +86,13 @@ class MongoCompass():
     super().__init__()
 
   #Starts Compass
-  def startCompass():
-    Popen('mongodbcompass.exe')
+  def startCompass(constr):
+    print(constr)
+    Popen(['mongodbcompass',constr])
 
 class MongoSH():
   def __init__(db, *args,**kwargs):
     super().__init__()
 
-  def startMongosh():
-    Popen(['powershell.exe','mongosh'],creationflags=subprocess.CREATE_NEW_CONSOLE)
+  def startMongosh(constr):
+    Popen(['mongosh',constr],creationflags=subprocess.CREATE_NEW_CONSOLE)
