@@ -56,5 +56,3 @@ class databaseInfo(ctk.CTkTabview):
       row = 0
       column = 0
       labelrows = 0
-    
-  def updateDatabase(self):...

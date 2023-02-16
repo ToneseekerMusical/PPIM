@@ -92,8 +92,8 @@ class NewProjectFrame(ctk.CTkFrame):
         document['frontend'][name] = 3001
       if name == 'adminPort':
         document['frontend'][name] = 3000
-    document['frontend']['frontendHost'] = 'https://localhost'
-    document['frontend']['adminHost'] = 'https://localhost'
+    document['frontend']['frontendHost'] = 'http://localhost'
+    document['frontend']['adminHost'] = 'http://localhost'
     for name, field in self.plugins.inputs.items():
       document['plugins'][name] = {}
       document['plugins'][name]['enabled'] = field.get()

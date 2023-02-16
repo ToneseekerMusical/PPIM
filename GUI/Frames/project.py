@@ -22,7 +22,7 @@ class ProjectFrame(ctk.CTkFrame):
     self.site:Database = client.Connect(dbName=site)
     self.siteData = self.site.get_collection('Site Info').find_one()
 
-    print(self.siteData['backend'])
+    print(self.siteData['frontend'])
 
     self.title = ctk.CTkLabel(self,text=self.siteData['_id'],font=ctk.CTkFont(size=20,weight="bold"),anchor='center')
     self.title.grid(row=0,column=0,columnspan=2,pady=(10,0),sticky='nsew')
@@ -39,7 +39,7 @@ class ProjectFrame(ctk.CTkFrame):
     self.editSite = siteSetup(self)
     self.editSite.grid(row=2,column=1,sticky='ew',padx=10)
 
-    self.devTools = devTools(self)
+    self.devTools = devTools(self.siteData['frontend'],self)
     self.devTools.grid(row=3,column=1,sticky='ew',padx=10,pady=(0,10))
     
     self.devTools = Github(self)

@@ -60,7 +60,7 @@ class SiteManagement():
         subprocess.run(['powershell.exe','npm','i','create-payload-app'],cwd=p)
         with subprocess.Popen(['powershell.exe','npx','create-payload-app','--name','admin','--template','blank',],
           cwd=p,stdin=subprocess.PIPE, text=True,) as npm:
-          npm.stdin.write(f'{self.conStr}/{name}\n')
+          npm.stdin.write(f'{self.conStr}\n')
       if location == 'frontend':
         subprocess.Popen(['powershell.exe','npm','i',f'{self.frontend}'],cwd=p)
 
