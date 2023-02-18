@@ -15,13 +15,13 @@ class devTools(ctk.CTkTabview):
     self.frontend = frontend
     self.add('Dev Tools')
     self.tab('Dev Tools').grid_columnconfigure((0,1),weight=1)
-    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Frontend',command=multiprocessing.Process(target=lambda:self.startFront(self.frontend['frontendPath']),daemon=True).start)
+    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Frontend',command=threading.Thread(target=lambda:self.startFront(self.frontend['frontendPath']),daemon=True).start)
     self.startFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
-    self.buildFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Build Frontend',command=multiprocessing.Process(target=lambda:self.buildSite(self.frontend['frontendPath'])).start)
+    self.buildFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Build Frontend',command=threading.Thread(target=lambda:self.buildSite(self.frontend['frontendPath'])).start)
     self.buildFrontend.grid(row=0,column=1,padx=5,pady=5,sticky='ew')
     self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',command=threading.Thread(target=lambda: self.AdminStart(self.frontend['adminPath']),daemon=True).start)
     self.startAdmin.grid(row=1,column=0,padx=5,pady=5,sticky='ew')
-    self.buildAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Build Admin',command=multiprocessing.Process(target=lambda:self.buildSite(self.frontend['adminPath'])).start)
+    self.buildAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Build Admin',command=threading.Thread(target=lambda:self.buildSite(self.frontend['adminPath'])).start)
     self.buildAdmin.grid(row=1,column=1,padx=5,pady=5,sticky='ew')
 
   def buildSite(self,siteDir):
