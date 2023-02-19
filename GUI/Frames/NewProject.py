@@ -8,6 +8,7 @@ from Controllers.Mongo import MongoDB
 from Controllers.SiteManagement import SiteManagement
 from pymongo.database import Database
 from pathlib import Path
+import threading
 
 class NewProjectFrame(ctk.CTkFrame):
   def __init__(self,client:MongoDB,PPIM:Database,*args,**kwargs):
@@ -33,7 +34,7 @@ class NewProjectFrame(ctk.CTkFrame):
     self.frontendTemplates = ['create-react-app','create-react-native-app','create-next-app','create-vite-app']
     self.adminTemplates = ['None','Payload Admin',]
 
-    self.grid_columnconfigure((0,1), weight=1)  # configure grid of individual tabs
+    self.grid_columnconfigure(1, minsize=400)  # configure grid of individual tabs
     self.grid_rowconfigure((0,1,2,3), weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((4,5), weight=1)  # configure grid of individual tabs
 
@@ -55,7 +56,7 @@ class NewProjectFrame(ctk.CTkFrame):
     self.plugins = Plugins(self.plugins,self)
     self.plugins.grid(row=3,column=0,columnspan=2,padx=(5,10),pady=5,sticky='ew')
     
-    self.newsite = ctk.CTkButton(self,text='Create New Site',command=self.createNewPayloadSite)
+    self.newsite = ctk.CTkButton(self,text='Create New Site',command=threading.Thread(target = self.createNewPayloadSite).start)
     self.newsite.grid(row=4,rowspan=2,column=1,padx=(5,10),pady=(5,10),sticky='nsew')
 
     self.progress = ctk.CTkProgressBar(self,mode='indeterminate')

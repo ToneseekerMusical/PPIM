@@ -21,9 +21,7 @@ class ProjectFrame(ctk.CTkFrame):
 
     self.site:Database = client.Connect(dbName=site)
     self.siteData = self.site.get_collection('Site Info').find_one()
-
-    print(self.siteData['frontend'])
-
+    
     self.title = ctk.CTkLabel(self,text=self.siteData['_id'],font=ctk.CTkFont(size=20,weight="bold"),anchor='center')
     self.title.grid(row=0,column=0,columnspan=2,pady=(10,0),sticky='nsew')
 

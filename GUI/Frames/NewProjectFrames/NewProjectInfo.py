@@ -6,7 +6,7 @@ class projectFrame(ctk.CTkTabview):
   def __init__(self, dbinfo, github, gitUser, *args, **kwargs):
     super().__init__(
       corner_radius=10,
-      width=5,
+      width=150,
       height=5,
       segmented_button_selected_color=('#979DA2', 'gray29'),
       segmented_button_selected_hover_color=('#979DA2', 'gray29'),

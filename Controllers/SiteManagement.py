@@ -44,9 +44,11 @@ class SiteManagement():
     self.frontend = document['frontend']['frontendTemplate']
     Path(f'{self.path}').mkdir(parents=True)
     if document['frontend']['frontendTemplate'] != 'None':
-      Path(f'{self.path}/frontend').mkdir()
-      self.locations['frontend'] = f'{self.path}\\frontend'
+      if document['frontend']['frontendTemplate'] != 'create-next-app':
+        Path(f'{self.path}/frontend').mkdir()
+      self.locations['frontend'] = f'{self.path}'
     if document['frontend']['adminTemplate'] == 'None':
+      Path(f'{self.path}/admin').mkdir()
       self.__NPMInstall(document['_id'])
     else:
       self.__DownloadTemplates()
@@ -57,12 +59,17 @@ class SiteManagement():
     for location, path in self.locations.items():
       p = f'{Path(path)}'
       if location == 'admin':
-        subprocess.run(['powershell.exe','npm','i','create-payload-app'],cwd=p)
-        with subprocess.Popen(['powershell.exe','npx','create-payload-app','--name','admin','--template','blank',],
-          cwd=p,stdin=subprocess.PIPE, text=True,) as npm:
+        subprocess.run(['npm','--prefix',f'{p}','i','create-payload-app'],shell=True)
+        print(f'Creating Payload App at {p}')
+        with subprocess.Popen(['npx','create-payload-app','--name','admin','--template','blank'],
+          stdin=subprocess.PIPE, text=True,shell=True,cwd=p) as npm:
           npm.stdin.write(f'{self.conStr}\n')
       if location == 'frontend':
-        subprocess.Popen(['powershell.exe','npm','i',f'{self.frontend}'],cwd=p)
+
+        subprocess.Popen(['npm','--prefix',f'{p}','i',f'{self.frontend}'],shell=True)
+        if self.frontend == 'create-next-app':
+          subprocess.Popen(['npx','--prefix',f'{p}','create-next-app','frontend','--ts',
+                  '--eslint','--experimental-app','--src-dir','--import-alias','@/*'],shell=True,cwd=p)
 
   def __DeleteDirectory(self):...
   
