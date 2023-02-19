@@ -1,5 +1,5 @@
 import customtkinter as ctk
-import multiprocessing, subprocess, threading
+import subprocess, threading, os, signal, psutil
 
 class devTools(ctk.CTkTabview):
   def __init__(self, frontend, *args, **kwargs):
@@ -15,35 +15,84 @@ class devTools(ctk.CTkTabview):
     self.frontend = frontend
     self.add('Dev Tools')
     self.tab('Dev Tools').grid_columnconfigure((0,1),weight=1)
-    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Frontend',command=threading.Thread(target=lambda:self.startFront(self.frontend['frontendPath']),daemon=True).start)
+    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Frontend',
+                                       command=lambda:self.NPMControl('frontend'))
     self.startFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
-    self.buildFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Build Frontend',command=threading.Thread(target=lambda:self.buildSite(self.frontend['frontendPath'])).start)
+
+    self.buildFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Build Frontend',
+                                       command=lambda:self.BuildControl('frontend'))
     self.buildFrontend.grid(row=0,column=1,padx=5,pady=5,sticky='ew')
-    self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',command=threading.Thread(target=lambda: self.AdminStart(self.frontend['adminPath']),daemon=True).start)
+
+    self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',
+                                    command=lambda:self.NPMControl('admin'))
     self.startAdmin.grid(row=1,column=0,padx=5,pady=5,sticky='ew')
-    self.buildAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Build Admin',command=threading.Thread(target=lambda:self.buildSite(self.frontend['adminPath'])).start)
+
+    self.buildAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Build Admin',
+                                    command=lambda:self.BuildControl('admin'))
     self.buildAdmin.grid(row=1,column=1,padx=5,pady=5,sticky='ew')
 
-  def buildSite(self,siteDir):
-    subprocess.Popen(['powershell','npm','run','build'],cwd=siteDir)
+  def BuildControl(self,site):
+    if site == 'admin':
+      threading.Thread(target=self.AdminBuild).start()
+      self.buildAdmin.configure(state='disabled')
+    if site == 'frontend':
+      threading.Thread(target=self.FrontendBuild).start()
 
-  def stopFront(self):
-    self.front.__exit__()
-    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Frontend',command=multiprocessing.Process(target=lambda:self.startFront(self.frontend['frontendPath']),daemon=True).start)
-    self.startFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
-  
-  def startFront(self,siteDir):
-    self.front = multiprocessing.Process(['npm','run','dev'],cwd=siteDir)
-    self.stopFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Stop Frontend',command=self.stopFront)
-    self.stopFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
+  def FrontendBuild(self):
+    print('Build Frontend')
+    build = subprocess.run(['npm','--prefix',f'{self.frontend["frontendPath"]}','run','build'],
+                           shell=True,capture_output=True,text=True)
+    
 
-  def AdminStart(self,siteDir):
-    self.stopAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Stop Admin', command=self.AdminStop)
-    self.stopAdmin.grid(row=1,column=0,padx=5,pady=5,sticky='ew')
-    self.admin = multiprocessing.Process(target=subprocess.run(['powershell','npm','run','dev'],cwd=siteDir))
-    self.admin.start()
+  def AdminBuild(self):
+    build = subprocess.Popen(['npm','--prefix',f'{self.frontend["adminPath"]}','run','build'],
+                           shell=True,stdout=subprocess.PIPE,text=True)
+#This SHOULD work on every command I want to pipe to a label to show the progress of
+#     while not build.poll():
+#      data = build.stdout.readline()
+#      if data:
+#        print(data)
+#        #Configure Label here
+#      else:
+#        break
+    self.buildAdmin.configure(state='normal')
+
+  def NPMControl(self, site):
+    self.npmThread = threading.Thread(target = lambda:self.NPMStart(site), daemon=True)
+    self.npmThread.start()
+
+  def NPMStart(self,site):
+    if site == 'admin':
+      self.stopAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Stop Admin',
+                                     command=self.AdminStop)
+      self.stopAdmin.grid(row=1,column=0,padx=5,pady=5,sticky='ew')
+      self.admin = subprocess.Popen(['npm','--prefix',
+                                    f'{self.frontend["adminPath"]}','run','dev'],shell=True)
+    if site == 'frontend':
+      self.stopFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Stop Frontend',
+                                     command=self.FrontendStop)
+      self.stopFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
+      self.frontend = subprocess.Popen(['npm','--prefix',
+                                    f'{self.frontend["frontendPath"]}','run','dev'],shell=True)
 
   def AdminStop(self):
-    self.admin.terminate()
-    self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',command=threading.Thread(target=lambda: self.AdminStart(self.frontend['adminPath']),daemon=True).start)
+    currentProcess = psutil.Process(self.admin.pid)
+    children = currentProcess.children(recursive=True)
+
+    for child in children:
+      child.kill()
+
+    self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',
+                                    command=lambda:self.NPMControl('admin'))
     self.startAdmin.grid(row=1,column=0,padx=5,pady=5,sticky='ew')
+
+  def FrontendStop(self):
+    currentProcess = psutil.Process(self.frontend.pid)
+    children = currentProcess.children(recursive=True)
+
+    for child in children:
+      child.kill()
+
+    self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',
+                                    command=lambda:self.NPMControl('frontend'))
+    self.startFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
