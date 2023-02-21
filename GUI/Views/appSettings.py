@@ -1,47 +1,27 @@
 import customtkinter as ctk
+from GUI.Frames.appSettings import SettingsFrame
 
-class SettingsFrame(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
-    super().__init__(*args,**kwargs)
+class AppSettings(ctk.CTkToplevel):
+  def __init__(self, windowName:str, *args, **kwargs):
+    super().__init__(*args, **kwargs)
 
-    self.appearance_mode_optionemenu = ctk.CTkOptionMenu(
-      self, 
-      values=["Light", "Dark", "System"],
-      command=self.change_appearance_mode_event
-      )
-    self.appearance_mode_optionemenu.grid(
-      row=2,
-      column=0,
-      padx=10,
-      pady=(10, 10)
-      )
+    self.windowName = windowName
+    self._current_height = 500
+    #sh = self.winfo_screenheight()//2
+    #sw = self.winfo_screenwidth()//2
+    self.grab_set()
+    self.focus_force()
+    self.wm_title(f'{self.windowName.replace("-"," ")} Settings')
+    self.transient()
+    self.resizable(False,False)
+    self.update()
+    self.settings = SettingsFrame(self)
+    self.settings.pack()
 
-    self.scaling_label = ctk.CTkLabel(
-      self,
-      text="UI Scaling:",
-      anchor="w")
-    self.scaling_label.grid(
-      row=3,
-      column=0,
-      padx=10,
-      pady=(10, 0)
-      )
+    #wh = self.winfo_height()//2
+    #ww = self.winfo_width()//2
+    #self.geometry(f"{sw-ww}+{sh-wh}")
 
-    self.scaling_optionemenu = ctk.CTkOptionMenu(
-      self,
-      values=["80%", "90%", "100%", "110%", "120%"],
-      command=self.change_scaling_event
-      )
-    self.scaling_optionemenu.grid(
-      row=4,
-      column=0,
-      padx=10,
-      pady=(10, 20)
-      )
-    
-  def change_appearance_mode_event(self, new_appearance_mode: str):
-    ctk.set_appearance_mode(new_appearance_mode)
-
-  def change_scaling_event(self, new_scaling: str):
-    new_scaling_float = int(new_scaling.replace("%", "")) / 100
-    ctk.set_widget_scaling(new_scaling_float)
+    # create label on CTkToplevel window
+    #label = ctk.CTkLabel(self, text=self.pluginName)
+    #label.pack(side="top", fill="both", expand=True, padx=20, pady=20)

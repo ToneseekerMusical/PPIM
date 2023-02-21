@@ -26,6 +26,6 @@ class PluginSettingsSwitch(ctk.CTkSwitch):
 
   def setState(self):
     if self.get() == False:
-      self.master.master.inputs['Plugins'][self.pluginName].configure(state='disabled')
+      self.master.master.inputs['Plugin Settings'][self.pluginName].configure(state='disabled')
     else:
-      self.master.master.inputs['Plugins'][self.pluginName].configure(state='normal')
+      self.master.master.inputs['Plugin Settings'][self.pluginName].configure(state='normal')

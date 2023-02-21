@@ -28,10 +28,9 @@ class pluginFrame(ctk.CTkTabview):
     field:ctk.CTkBaseClass
     for field in self.inputs.values():
       field.grid(row=self.row,column=self.column,pady=5,padx=5,sticky='ew')
-      self.row += 1
-      if self.row > 3:
-        self.row = 0
-        columnarray = columnarray + (self.column,)
-        self.column += 1
+      self.column += 1
+      if self.column > (len(self.inputs.values())//6):
+        self.column = 0
+        self.row += 1
 
-    self.tab('Plugins').grid_columnconfigure(tuple(columnarray),weight=1)
+    self.tab('Plugins').grid_columnconfigure((0,1,2,3,4),weight=1)

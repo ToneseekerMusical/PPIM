@@ -2,7 +2,7 @@ import customtkinter as ctk
 import GUI.Buttons.newWindow as newWin
 import GUI.Frames.progress as updatewin
 import GUI.Frames.paypal as Paypal
-import GUI.Views.appSettings as appSettings
+from GUI.Buttons.appSettings import AppSettingsBtn
 
 class OptionsFrame(ctk.CTkFrame):
   def __init__(self, *args, **kwargs):
@@ -26,18 +26,8 @@ class OptionsFrame(ctk.CTkFrame):
     )
 
         #Settings
-    self.settings = newWin.btn(
-      master = self,
-      text = 'Settings',
-      frame = appSettings.SettingsFrame
-    )
-    self.settings.grid(
-      row=7,
-      column=0,
-      padx=10,
-      pady=5,
-      sticky='sew'
-    )
+    self.settings = AppSettingsBtn('Settings',self, text='Settings')
+    self.settings.grid(row=7,column=0,padx=10,pady=5,sticky='sew')
 
     self.donate = newWin.btn(
       master = self,

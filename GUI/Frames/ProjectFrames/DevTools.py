@@ -47,7 +47,7 @@ class devTools(ctk.CTkTabview):
   def AdminBuild(self):
     build = subprocess.Popen(['npm','--prefix',f'{self.frontend["adminPath"]}','run','build'],
                            shell=True,stdout=subprocess.PIPE,text=True)
-#This SHOULD work on every command I want to pipe to a label to show the progress of
+#This SHOULD work on every command I want to pipe to a label to show the progress of a command
 #     while not build.poll():
 #      data = build.stdout.readline()
 #      if data:
@@ -72,7 +72,7 @@ class devTools(ctk.CTkTabview):
       self.stopFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Stop Frontend',
                                      command=self.FrontendStop)
       self.stopFrontend.grid(row=0,column=0,padx=5,pady=5,sticky='ew')
-      self.frontend = subprocess.Popen(['npm','--prefix',
+      self.front = subprocess.Popen(['npm','--prefix',
                                     f'{self.frontend["frontendPath"]}','run','dev'],shell=True)
 
   def AdminStop(self):
@@ -80,7 +80,7 @@ class devTools(ctk.CTkTabview):
     children = currentProcess.children(recursive=True)
 
     for child in children:
-      child.kill()
+      child.terminate()
 
     self.startAdmin = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',
                                     command=lambda:self.NPMControl('admin'))
@@ -91,7 +91,7 @@ class devTools(ctk.CTkTabview):
     children = currentProcess.children(recursive=True)
 
     for child in children:
-      child.kill()
+      child.terminate()
 
     self.startFrontend = ctk.CTkButton(self.tab('Dev Tools'),text='Start Admin',
                                     command=lambda:self.NPMControl('frontend'))

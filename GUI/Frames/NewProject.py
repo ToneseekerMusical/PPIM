@@ -28,13 +28,13 @@ class NewProjectFrame(ctk.CTkFrame):
     self.plugins = ['Auth0','Blurhash','Cloud-Storage','Cloudinary','Default-Roles',
       'Form-Builder','Google-One-Tap','Hash-Upload','Image-Kit','Lexical','NestedDocs',
       'oAuth','Phone-Field','Redis-Cache','S3-Upload','Search','SEO','Stripe','webP',
-      'Zapier']
+      'Zapier','Redirects','Base-64','Password-Protection','Resolve-Alias','Tenancy']
     self.payloadVersions = ['1.6.10','1.6.9','1.6.8','1.6.7']
 
     self.frontendTemplates = ['create-react-app','create-react-native-app','create-next-app','create-vite-app']
     self.adminTemplates = ['None','Payload Admin',]
 
-    self.grid_columnconfigure(1, minsize=400)  # configure grid of individual tabs
+    self.grid_columnconfigure((0,1), minsize=400, weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((0,1,2,3), weight=1)  # configure grid of individual tabs
     self.grid_rowconfigure((4,5), weight=1)  # configure grid of individual tabs
 

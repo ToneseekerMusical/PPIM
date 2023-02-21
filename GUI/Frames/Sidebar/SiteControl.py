@@ -18,6 +18,7 @@ class SiteControl(ctk.CTkFrame):
     self.client = client
     self.PPIM = PPIM
     self.dbList = self.client.dbList
+    print(self.dbList)
 
     if self.dbList == []:
       self.dbList = ['No sites found']

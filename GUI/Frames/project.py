@@ -21,7 +21,7 @@ class ProjectFrame(ctk.CTkFrame):
 
     self.site:Database = client.Connect(dbName=site)
     self.siteData = self.site.get_collection('Site Info').find_one()
-    
+
     self.title = ctk.CTkLabel(self,text=self.siteData['_id'],font=ctk.CTkFont(size=20,weight="bold"),anchor='center')
     self.title.grid(row=0,column=0,columnspan=2,pady=(10,0),sticky='nsew')
 
@@ -29,16 +29,16 @@ class ProjectFrame(ctk.CTkFrame):
     self.projectInfo.grid(row=1,column=0,sticky='ew')
 
     self.plugins = pluginManager(self.siteData['plugins'],self)
-    self.plugins.grid(row=2,column=0,rowspan=3,sticky='nsew',pady=(0,10))
+    self.plugins.grid(row=2,column=0,columnspan=2,sticky='nsew',pady=5,padx=(0,10))
 
     self.dbInfo = databaseInfo(self.siteData['backend'],self)
     self.dbInfo.grid(row=1,column=1,sticky='ew',padx=10)
 
     self.editSite = siteSetup(self)
-    self.editSite.grid(row=2,column=1,sticky='ew',padx=10)
+    self.editSite.grid(row=4,column=0,sticky='ew',pady=(0,10))
 
     self.devTools = devTools(self.siteData['frontend'],self)
-    self.devTools.grid(row=3,column=1,sticky='ew',padx=10,pady=(0,10))
+    self.devTools.grid(row=3,column=0,sticky='ew')
     
     self.devTools = Github(self)
-    self.devTools.grid(row=4,column=1,sticky='ew',padx=10,pady=(0,10))
+    self.devTools.grid(row=3,column=1,sticky='ew',padx=10)

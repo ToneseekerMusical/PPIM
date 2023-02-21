@@ -34,10 +34,10 @@ class pluginManager(ctk.CTkTabview):
           if settings['enabled'] == True:
             self.inputs[tab][plugin].select()
         rowIndeces.append(row)
-        row += 1
-        if row >= len(self.plugins)//2:
-          row = 0
-          column += 1
+        column += 1
+        if column >= len(self.plugins)//5:
+          column = 0
+          row += 1
       row = 0
       column = 0
     row = 0
