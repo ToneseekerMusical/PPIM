@@ -6,9 +6,10 @@ from GUI.Frames.Settings.NodeJS import NodeJS
 from GUI.Frames.Settings.Payload import Payload
 from GUI.Frames.Settings.UI import UI
 from GUI.Frames.Settings.Updates import Updates
+from pymongo.database import Database
 
 class SettingsGroups(ctk.CTkTabview):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,PPIM:Database,*args,**kwargs):
     super().__init__(
       fg_color='grey14',
       *args,**kwargs)

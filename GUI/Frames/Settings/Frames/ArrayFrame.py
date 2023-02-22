@@ -12,11 +12,11 @@ class ArrayFrame(ctk.CTkScrollableFrame):
   def AddDependency(self):
     self.form[f'Dependency{self.depcount}'] = {
       'labels':{
-        'Dependency Name':ctk.CTkLabel(self,text='Name',anchor='w'),
+        'Name':ctk.CTkLabel(self,text='Name',anchor='w'),
         'Version':ctk.CTkLabel(self,text='Version',anchor='w'),
       },
       'inputs':{
-        'Dependency Name':ctk.CTkEntry(self,placeholder_text='Dependency Name'),
+        'Name':ctk.CTkEntry(self,placeholder_text='Dependency Name'),
         'Version':ctk.CTkEntry(self,placeholder_text='Dependency Version')
       }
     }

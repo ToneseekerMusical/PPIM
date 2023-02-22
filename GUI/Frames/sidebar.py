@@ -43,6 +43,7 @@ class SidebarFrame(ctk.CTkFrame):
     )
 
     self.options = OptionsFrame(
+      PPIM,
       self
     )
     self.options.grid(
