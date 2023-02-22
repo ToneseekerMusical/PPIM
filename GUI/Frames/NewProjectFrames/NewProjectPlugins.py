@@ -18,7 +18,6 @@ class pluginFrame(ctk.CTkTabview):
 
     self.row = 0
     self.column = 0
-    columnarray = ()
 
     for plugin in plugins:
       self.inputs[plugin] = ctk.CTkCheckBox(
