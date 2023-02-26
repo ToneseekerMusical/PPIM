@@ -1,8 +1,6 @@
 import customtkinter as ctk
 
-
-
-class githubFrame(ctk.CTkTabview):
+class GithubFrame(ctk.CTkTabview):
   def __init__(self, gitUser, *args, **kwargs):
     super().__init__(
       corner_radius=10,

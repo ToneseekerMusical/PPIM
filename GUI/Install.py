@@ -1,6 +1,6 @@
 import customtkinter as ctk
-import GUI.Frames.install as Install
-import GUI.Frames.paypal as Paypal
+from GUI.Frames.Static import InstallFrame
+from GUI.Frames.Reusable import PaypalFrame
 
 
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
@@ -35,7 +35,7 @@ class App(ctk.CTk):
       sticky='nsew'
       )
     
-    self.paypal = Paypal.PaypalFrame(
+    self.paypal = PaypalFrame(
       self,
     )
     self.paypal.grid(
@@ -46,7 +46,7 @@ class App(ctk.CTk):
       sticky='ew'
     )
 
-    self.install = Install.InstallFrame(
+    self.install = InstallFrame(
       self,
       self,
     )

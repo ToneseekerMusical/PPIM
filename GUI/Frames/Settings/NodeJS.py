@@ -1,8 +1,8 @@
 import customtkinter as ctk
-from GUI.Frames.Settings.Frames.ArrayFrame import ArrayFrame
+from GUI.Frames.Reusable.ArrayFrame import ArrayFrame
 
 class NodeJS(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,current,*args,**kwargs):
     super().__init__(
       fg_color='transparent',
       bg_color='transparent',

@@ -1,9 +1,9 @@
 import customtkinter as ctk
 from pathlib import Path
-from GUI.Buttons.dirSelect import dirSelect
+from GUI.Buttons import DirSelectBtn
 
 class Directories(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,current,*args,**kwargs):
     super().__init__(
       bg_color='transparent',
       fg_color='transparent',
@@ -31,7 +31,7 @@ class Directories(ctk.CTkFrame):
       self.form[setting]['labels']['directory'].grid(column=0,row=0,sticky='ew')
       self.form[setting]['inputs']['directory']=ctk.CTkLabel(self.form[setting]['frame'],text='No Directory Set',anchor='w')
       self.form[setting]['inputs']['directory'].grid(column=0,row=1,columnspan=2,sticky='ew')
-      self.form[setting]['button']['directory']=dirSelect(setting.replace('-',' '),f'{Path.cwd()}\\lib',
+      self.form[setting]['button']['directory']=DirSelectBtn(setting.replace('-',' '),f'{Path.cwd()}\\lib',
               self.form[setting]['inputs']['directory'],self.form[setting]['frame'],text='Select Directory')
       self.form[setting]['button']['directory'].grid(column=1,row=0,sticky='ew')
       row += 1

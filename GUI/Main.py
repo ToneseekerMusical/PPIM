@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from GUI.Frames.sidebar import SidebarFrame
+from GUI.Frames.Static import SidebarFrame
 from Controllers.Mongo import MongoDB
 from pymongo.database import Database
 

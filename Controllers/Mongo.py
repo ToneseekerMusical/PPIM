@@ -1,4 +1,4 @@
-import Controllers.System as System
+from Controllers.System import System
 import subprocess, pymongo, psutil
 from subprocess import Popen, run
 import pymongo.database as database

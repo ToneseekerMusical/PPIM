@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class pluginFrame(ctk.CTkTabview):
+class PluginFrame(ctk.CTkTabview):
   def __init__(self, plugins, *args, **kwargs):
     super().__init__(
       corner_radius=10,

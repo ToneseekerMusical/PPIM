@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 class Updates(ctk.CTkFrame):
-  def __init__(self,*args,updates:dict={},**kwargs):
+  def __init__(self,*args,current,**kwargs):
     super().__init__(bg_color='transparent',fg_color='transparent',*args,**kwargs)
     self.grid_columnconfigure((0,1),weight=1)
     frequency = ['On Startup','Once Per Day', 'Once Per Week']

@@ -2,6 +2,7 @@ import urllib.error, urllib.request, urllib.parse, zipfile, os, re, ctypes
 from urllib.request import urlopen, urlretrieve
 from pathlib import Path
 from pymongo.collection import Collection
+from git import Repo
 
 class Dependencies():
   def __init__(self, mongoVersion:str, operation:str, dir:str = '', sysInfo:Collection = None):
@@ -27,7 +28,13 @@ class Dependencies():
       self.__path = str(Path.cwd())
     else:
       self.__path = str(dir)
+    
+    if not Path(self.__path+'\\tmp\\').exists():
+      Path(self.__path+'\\tmp\\').mkdir(parents=True)
     self.__tmp = Path(self.__path+'\\tmp\\')
+
+    if not Path(self.__path+'\\lib\\').exists():
+      Path(self.__path+'\\lib\\').mkdir(parents=True)
     self.__lib = Path(self.__path+'\\lib\\')
 
     if self.__operation == 'install':
@@ -164,12 +171,12 @@ class Dependencies():
             self.allDependencies[dep][version['version']]['used'] = False
 
       if dep == 'NodeJS':
-        self.__json[dep] = list(filter(lambda x: x['lts'] != False and x['security'] == True, self.__json[dep]))
+        versions = list(filter(lambda x: x['lts'] != False and x['security'] == True, self.__json[dep]))
         verFilter = []
-        for version in self.__json[dep]:
+        for version in versions:
           vers = [x for x in version['files'] if self.__os['system'] in x and self.__os['arch'] in x and self.__os['package'] in x]
           for ver in vers:
-            if str(version['version'].split(".")[0]) not in verFilter and int(version['version'][-1:]) >= 16:
+            if str(version['version'].split(".")[0]) not in verFilter and int(version['version'].split('.')[0][1:]) >= 16:
               verFilter.append(str(version["version"].split(".")[0]))
               self.allDependencies[dep][version['version']] = {}
               self.allDependencies[dep][version['version']]['version'] = version['version']
@@ -228,84 +235,6 @@ class Dependencies():
       self.allDependencies[dep]['hasUpdate'] = False
       self.allDependencies[dep]['updateVer'] = version
     self.downloads = self.allDependencies
-
-#  def __UpdateCheck(self):
-#    for dep, url in self.urls.items():
-#      version = 'error'
-#      if dep == 'MongoDB':
-#        version = list(filter(lambda ver: ver['lts_release'] == True, self.__json[dep]['versions']))[0]
-#        version = [x for x in version['downloads'] if 'target' in x.keys() and self.__os['system'].lower() in x['target'] and self.mongoE == x['edition'].lower()][0]
-#        if version['version'] not in self.updates[dep]:
-#          self.updates[dep][version['version']] = version['archive']
-#          self.updates[dep][version['version']]['active'] = True
-#          self.updates[dep][version['version']]['current'] = True
-#          self.updates[dep][version['version']]['downloaded'] = False
-#          self.updates[dep][version['version']]['installed'] = False
-#          self.updates[dep][version['version']]['used'] = True
-#          self.updates[dep]['hasUpdate'] = True
-#          self.updates[dep]['updateVer'] = version['version']
-#
-#      if dep == 'Compass':
-#        version = list(filter(lambda ver: 'beta' not in ver['version'].lower() and 'readonly' not in ver['version'].lower() and 'isolated' not in ver['version'].lower() ,self.__json[dep]['versions']))[0]
-#        ver = [x for x in version['platform'] if self.__os['system'].lower() in x['name'].lower() and self.__os['package'].lower() in x['download_link'].lower()]
-#        if version['id'] not in self.updates[dep]:
-#          self.updates[dep][version['_id']] = {}
-#          self.updates[dep][version['_id']]['url'] = ver['download_link']
-#          self.updates[dep]['hasUpdate'] = version['_id']
-#
-#      if dep == 'MongoSH':
-#        version = self.__json[dep]['versions'][0]
-#        ver = [x for x in version['platform'] if self.__os['system'].lower() in x['name'].lower() and self.__os['package'].lower() in x['download_link']][0]
-#        if not Path(f'{self.__lib}\{dep}\{version["_id"]}').exists():
-#          self.updates[dep] = {}
-#          self.updates[dep][version['_id']] = {}
-#          self.updates[dep][version['_id']]['url'] = ver['download_link']
-#          self.updates[dep]['hasUpdate'] = version['_id']
-#
-#      if dep == 'DBTools':
-#        version = self.__json[dep]['versions'][0]
-#        ver = [x for x in version['downloads'] 
-#                  if self.__os['system'].lower() in x['name'].lower()][0]
-#        if not Path(f'{self.__lib}\{dep}\{version["version"]}').exists():
-#          self.updates[dep] = {}
-#          self.updates[dep][version['version']] = ver['archive']
-#          self.updates[dep]['hasUpdate'] = version['version']
-#
-#      if dep == 'NodeJS':
-#        version = list(filter(lambda x: x['lts'] != False and x['security'] == True, self.__json[dep]))[0]
-#        vers = [x for x in version['files'] if self.__os['system'] in x and self.__os['arch'] in x and self.__os['package'] in x]
-#        if not Path(f'{self.__lib}\{dep}\{version["version"]}').exists():
-#          self.updates[dep] = {}
-#          self.updates[dep][version['version']] = {}
-#          self.updates[dep][version['version']]['url'] = f"https://nodejs.org/dist/{version['version']}/node-{version['version']}-{vers[0][:-4]}.{self.__os['package']}"
-#          self.updates[dep]['hasUpdate'] = version['version']
-#
-#      if dep == 'VSCode':
-#        vscode = urlopen(url)
-#        contentdisposition = vscode.info()['Content-Disposition']
-#        version = contentdisposition.split('"')[1].split('-')[-1][:-4]
-#        if not Path(f'{self.__lib}\{dep}\{version}').exists():
-#          self.updates[dep] = {}
-#          self.updates[dep][version] = {}
-#          self.updates[dep][version]['url'] = self.urls['VSCode']
-#          self.updates[dep]['hasUpdate'] = [version]
-#
-#      if dep == 'Github':
-#        github = urllib.request.Request(url)
-#        try:
-#          github = urllib.request.urlopen(github)
-#        except urllib.error.HTTPError as e:
-#          if e.status != 307:
-#            raise
-#          redirect = urllib.parse.urljoin(url, e.headers['location'])
-#          github = urllib.request.urlopen(redirect)
-#        version = github.url.split('/')[-1]
-#        ghURL = f'{github.url.replace("tag","download")}/gh_{version[1:]}_{self.__os["sysalt"].lower()}_{self.__os["cpu"]}.{self.__os["package"]}'
-#        if not Path(f'{self.__lib}\{dep}\{version}').exists():
-#          self.updates[dep] = {}
-#          self.updates[dep]['hasUpdate'] = version
-#          self.updates[dep][version] = {}
-#          self.updates[dep][version]['url'] = ghURL
 
   def __Download(self):
     if not self.__tmp.exists():self.__tmp.mkdir()
@@ -388,7 +317,7 @@ class Dependencies():
       u"powershell.exe",
       commands,
       None,
-      1
+      0
     )
 
   def __EmptyTmp(self):

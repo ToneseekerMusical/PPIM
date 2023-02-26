@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from GUI.Frames.Settings.settings import SettingsGroups
-from GUI.Frames.Settings.Frames.ArrayFrame import ArrayFrame
+from GUI.Frames.Static import SettingsFrame
+from GUI.Frames.Reusable import ArrayFrame
 from pymongo.database import Database
 
 class AppSettings(ctk.CTkToplevel):
@@ -8,7 +8,7 @@ class AppSettings(ctk.CTkToplevel):
     super().__init__(*args, **kwargs)
 
     self.windowName = windowName
-    self.PPIM = PPIM
+    self.PPIM = PPIM.get_collection('Settings').find_one()
     self.grab_set()
     self.focus_force()
     self.wm_title(f'{self.windowName.replace("-"," ")} Settings')

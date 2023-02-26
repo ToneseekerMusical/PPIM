@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class pluginSettings(ctk.CTkToplevel):
+class PluginSettings(ctk.CTkToplevel):
   def __init__(self, pluginName:str, *args, **kwargs):
     super().__init__(
       *args, **kwargs)
@@ -14,11 +14,9 @@ class pluginSettings(ctk.CTkToplevel):
     self.transient()
     self.resizable(False,False)
     self.update()
-    self.inputs = {'test1':'','test2':'','test3':'','test4':'','test5':'','test6':'','test7':'','test8':''}
-    for name, field in self.inputs.items():
-      self.inputs[name] = ctk.CTkButton(self,text=name,width=350)
-      self.inputs[name].pack(padx=10,pady=10)
-    self.update()
+    self.pluginSettings = __import__(f'GUI.Frames.PluginSettings.{self.pluginName.replace("-","")}')
+    print(self.pluginSettings)
+    # self.frame = getattr(self.pluginSettings,f'{self.pluginName.replace("-","")}')
     #wh = self.winfo_height()//2
     #ww = self.winfo_width()//2
     #self.geometry(f"{sw-ww}+{sh-wh}")

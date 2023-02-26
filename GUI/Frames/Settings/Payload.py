@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 class Payload(ctk.CTkFrame):
-  def __init__(self,*args,templates:dict={},adminaccount:dict={},plugins:dict={},**kwargs):
+  def __init__(self,*args,templates:dict={},adminaccount={},plugins:dict={},current,**kwargs):
     super().__init__(bg_color='transparent',fg_color='transparent',*args,**kwargs)
 
     if templates == {}:
@@ -17,8 +17,8 @@ class Payload(ctk.CTkFrame):
       self.adminPassword = ''
       self.adminUsername = ''
     else:
-      self.adminPassword = adminaccount['AdminPassword']
-      self.adminUsername = adminaccount['AdminUsername']
+      self.adminPassword = current['AdminPassword']
+      self.adminUsername = current['AdminUsername']
 
     if plugins == {}:
       self.plugins = {'Auth0':{},'Blurhash':{},'Cloud-Storage':{},'Cloudinary':{},'Default-Roles':{},

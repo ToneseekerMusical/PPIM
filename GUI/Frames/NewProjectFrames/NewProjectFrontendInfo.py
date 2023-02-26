@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-class frontendFrame(ctk.CTkTabview):
+class FrontendFrame(ctk.CTkTabview):
   def __init__(self, nodeversions:list, payloadversions:list, frontendTemplates:list, adminTemplates:list, *args, **kwargs):
     super().__init__(
       corner_radius=10,

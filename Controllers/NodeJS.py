@@ -1,4 +1,4 @@
-class NPM():
+class NodeJS():
   def __init__(self):
     super().__init__()
 

@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from GUI.Views.pluginSettings import pluginSettings
+from GUI.Views import PluginSettings
 
 class PluginSettingsBtn(ctk.CTkButton):
   def __init__(self,pluginName:str,*args,**kwargs):
@@ -11,7 +11,7 @@ class PluginSettingsBtn(ctk.CTkButton):
     
 
   def Open(self):
-    self.win = pluginSettings(self.pluginName,self)
+    self.win = PluginSettings(self.pluginName,self)
 
 class PluginSettingsSwitch(ctk.CTkSwitch):
   def __init__(self,pluginName:str,*args,**kwargs):

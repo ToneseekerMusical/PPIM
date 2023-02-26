@@ -2,7 +2,7 @@ import customtkinter as ctk
 from tkinter import filedialog
 from pathlib import Path
 
-class projectFrame(ctk.CTkTabview):
+class ProjectFrame(ctk.CTkTabview):
   def __init__(self, dbinfo, github, gitUser, *args, **kwargs):
     super().__init__(
       corner_radius=10,

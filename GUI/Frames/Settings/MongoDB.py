@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 class MongoDB(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,current,*args,**kwargs):
     super().__init__(fg_color='transparent',bg_color='transparent',*args,**kwargs)
     
     self.grid_columnconfigure((0,1),weight=1)

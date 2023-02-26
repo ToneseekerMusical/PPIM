@@ -1,7 +1,7 @@
 import json, platform, os
 from urllib.request import urlopen, urlretrieve
 
-class update():
+class Updates():
   def __init__(
     self,
     dependency:str,

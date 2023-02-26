@@ -30,14 +30,14 @@ if __name__ == "__main__":
       systemInfo = None
 
     if ppim != None and systemInfo != None:
-      import GUI.Main as Main
-      app = Main.App(client,ppim)
+      from GUI import Main
+      app = Main(client,ppim)
     elif ppim != None and systemInfo == None:
-      import GUI.Config as Config
-      app = Config.App()
+      from GUI import Config
+      app = Config()
     else:
-      import GUI.Install as Install
-      app = Install.App()
+      from GUI import Install
+      app = Install()
 
     app.eval('tk::PlaceWindow . center')
 

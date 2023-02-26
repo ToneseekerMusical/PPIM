@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from GUI.Buttons.pluginSettings import PluginSettingsBtn
-from GUI.Buttons.pluginSettings import PluginSettingsSwitch
+from GUI.Buttons.PluginSettings import PluginSettingsBtn
+from GUI.Buttons.PluginSettings import PluginSettingsSwitch
 
 class pluginManager(ctk.CTkTabview):
   def __init__(self, plugins, *args, **kwargs):

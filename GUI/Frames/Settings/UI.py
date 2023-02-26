@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 class UI(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
+  def __init__(self,*args,current,**kwargs):
     super().__init__(bg_color='transparent',fg_color='transparent',*args,**kwargs)
     self.grid_columnconfigure((0,1),weight=1)
     appearance =["Light", "Dark", "System"]

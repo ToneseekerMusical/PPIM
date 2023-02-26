@@ -1,11 +1,9 @@
 import customtkinter as ctk
 
 class Accounts(ctk.CTkFrame):
-  def __init__(self,*args,**kwargs):
-    super().__init__(
-      fg_color='transparent',
-      bg_color='transparent',
-      *args,**kwargs)
+  def __init__(self,current,*args,**kwargs):
+    super().__init__(fg_color='transparent',bg_color='transparent',*args,**kwargs)
+
     self.form = {
       'Amazon-Web-Services':{},
       'Azure':{},
