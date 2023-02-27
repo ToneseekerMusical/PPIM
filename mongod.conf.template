@@ -1,28 +1,30 @@
-# mongod.conf
 
-# for documentation of all options, see:
-#   http://docs.mongodb.org/manual/reference/configuration-options/
+      # mongod.conf
 
-# where to write logging data.
-systemLog:
-  quiet: true
-  traceAllExceptions: false
-  path: <logpath>
-  logAppend: true
-  logRotate: rename
-  destination: file
+      # for documentation of all options, see:
+      #   http://docs.mongodb.org/manual/reference/configuration-options/
 
-# how the process runs
-processManagement:
-  pidFilePath: <PIDPath>
-  timeZoneInfo: <TzDBPath>
+      # where to write logging data.
+      systemLog:
+        quiet: true
+        traceAllExceptions: false
+        path: <logpath>
+        logAppend: true
+        logRotate: rename
+        destination: file
 
-# network interfaces
-net:
-   port: 27017
-   bindIp: 127.0.0.1, ::1, localhost
-   ipv6: true
+      # how the process runs
+      processManagement:
+        pidFilePath: <PIDPath>
+        timeZoneInfo: <TzDBPath>
 
-# Where and how to store data.
-storage:
-  dbPath: <storagepath>
+      # network interfaces
+      net:
+        port: 27017
+        bindIp: 127.0.0.1, ::1, localhost
+        ipv6: true
+
+      # Where and how to store data.
+      storage:
+        dbPath: <storagepath>
+    

@@ -1,15 +1,9 @@
 import customtkinter as ctk
 from Controllers.Mongo import MongoDB
+from Controllers.System import System
 import ctypes, sys
-
 ctk.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
-
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
     
 if __name__ == "__main__":
 
@@ -25,19 +19,20 @@ if __name__ == "__main__":
       except:
         systemInfo = None
     except:
-      print('Database not available!')
       ppim = None
       systemInfo = None
 
+    mongo = System().get_service('MongoDB')
+    
     if ppim != None and systemInfo != None:
-      from GUI import Main
-      app = Main(client,ppim)
-    elif ppim != None and systemInfo == None:
-      from GUI import Config
-      app = Config()
+      from GUI.Main import App
+      app = App(client,ppim)
+    elif mongo != None and systemInfo == None:
+      from GUI.Config import App
+      app = App()
     else:
-      from GUI import Install
-      app = Install()
+      from GUI.Install import App
+      app = App()
 
     app.eval('tk::PlaceWindow . center')
 

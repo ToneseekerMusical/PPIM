@@ -79,7 +79,7 @@ class System():
     x = raw_input('Press Enter to exit.')
     return rc
 
-  def get_service(self,name):
+  def get_service(self,name)->dict:
     service = None
     try:
       service = psutil.win_service_get(name)

@@ -13,13 +13,13 @@ class MongoDB():
     return status
   #If service is stopped, start it
   def StartService(self):
-    if System.get_service('MongoDB')['status'] == 'stopped':
-      System.runAsAdmin(['net','start','MongoDB'])
+    if System().get_service('MongoDB')['status'] == 'stopped':
+      System().runAsAdmin(['net','start','MongoDB'])
 
   #If service is running, shut it down
   def StopService(self):
-    if System.get_service('MongoDB')['status'] == 'running':
-      System.runAsAdmin(['net','stop','MongoDB'])
+    if System().get_service('MongoDB')['status'] == 'running':
+      System().runAsAdmin(['net','stop','MongoDB'])
 
   #Connects to the server with a short timeout set to
   #verify that the server is running or reachable

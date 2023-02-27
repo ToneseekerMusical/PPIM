@@ -24,3 +24,10 @@ venv/*
 srv/*
 
 websites/*
+output
+output/*
+installer.iss
+payload.ico
+PPIM.spec
+Py-to-exe.json
+*.exe

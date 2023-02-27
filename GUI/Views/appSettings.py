@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from GUI.Frames.Static import SettingsFrame
-from GUI.Frames.Reusable import ArrayFrame
+from GUI.Frames.SettingsFrames import SettingsFrame
+from GUI.Frames.ReusableFrames import ArrayFrame
 from pymongo.database import Database
 
 class AppSettings(ctk.CTkToplevel):
@@ -16,7 +16,7 @@ class AppSettings(ctk.CTkToplevel):
     self.resizable(False,False)
     self.update()
     self.grid_columnconfigure(0,minsize=350,weight=1)
-    self.settings = SettingsGroups(self.PPIM,self)
+    self.settings = SettingsFrame(self.PPIM,self)
     self.settings.grid(row=0,column=0,columnspan=2,padx=10,pady=10)
     self.save = ctk.CTkButton(self,text='Save',command=self.save)
     self.save.grid(row=1,column=1,padx=10,pady=(0,10))

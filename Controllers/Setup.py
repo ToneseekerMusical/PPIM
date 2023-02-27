@@ -56,8 +56,6 @@ class Setup():
         dbPath: <storagepath>
     """)
 
-
-
     if not srv.is_dir(): srv.mkdir(parents=True)
     confc = open(cfgTemplate,'r').read()
     confc = confc.replace('<logpath>',f'{srv}\mongo.log')
@@ -80,10 +78,7 @@ class Setup():
         None,
         "runas",
         "powershell.exe",
-        f"""
-        mongod --config {cfgPath} --install --serviceName MongoDB;
-        net start MongoDB
-        """,
+        f"mongod --config {cfgPath} --install --serviceName MongoDB",
         None,
         0
       )

@@ -1,7 +1,8 @@
 import customtkinter as ctk
-from GUI.Frames.Static import SidebarFrame
+from GUI.Frames.SidebarFrames.SidebarFrame import SidebarFrame
 from Controllers.Mongo import MongoDB
 from pymongo.database import Database
+from pathlib import Path
 
 ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -11,6 +12,7 @@ class App(ctk.CTk):
     self.client = client
     self.PPIM = PPIM
     # configure window
+    self.iconbitmap(default=f'{Path().cwd()}\payload.ico')
     self.title("Python PayloadCMS Instance Manager")
     width  = self.winfo_screenwidth()
     height = self.winfo_screenheight()

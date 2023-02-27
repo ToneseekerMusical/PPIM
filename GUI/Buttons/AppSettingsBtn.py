@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from GUI.Views import AppSettings
+from GUI.Views.AppSettings import AppSettings
 from Controllers.Mongo import MongoDB
 
 class AppSettingsBtn(ctk.CTkButton):
