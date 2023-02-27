@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from GUI.Buttons.NewWindowBtn import NewWindowBtn
+from GUI.Buttons.PaypalBtn import PaypalBtn
 from GUI.Buttons.AppSettingsBtn import AppSettingsBtn
 from GUI.Frames.ReusableFrames import ProgressFrame
-from GUI.Frames.ReusableFrames import PaypalFrame
 from Controllers.Mongo import MongoDB
 
 class OptionsFrame(ctk.CTkFrame):
@@ -27,10 +27,8 @@ class OptionsFrame(ctk.CTkFrame):
     self.settings = AppSettingsBtn('Settings',self.PPIM,self, text='Settings')
     self.settings.grid(row=7,column=0,padx=10,pady=5,sticky='sew')
 
-    self.donate = NewWindowBtn(
-      master = self,
-      text = 'Donate',
-      frame = PaypalFrame
+    self.donate = PaypalBtn(
+      master = self
     )
     self.donate.grid(
       row=8,
