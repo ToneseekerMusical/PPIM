@@ -30,3 +30,4 @@ installer.iss
 payload.ico
 PPIM.spec
 Py-to-exe.json
+*.exe
